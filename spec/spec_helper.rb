@@ -14,6 +14,9 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'database_cleaner/active_record'
+require 'json_matchers/rspec'
+
+JsonMatchers.schema_root = "spec/support/api/schemas"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
