@@ -114,6 +114,9 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    json_matchers (0.11.1)
+      json_schema
+    json_schema (0.21.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -251,6 +254,7 @@ DEPENDENCIES
   faker
   importmap-rails
   jbuilder
+  json_matchers
   pg (~> 1.1)
   pry
   puma (~> 5.0)
