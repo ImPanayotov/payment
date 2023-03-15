@@ -1,0 +1,16 @@
+h1.text-center = merchant.name
+
+div.text-center
+  div.d-inline-flex.text-center.card style='width: 18rem'
+    div
+      b Name
+      p= merchant.name
+    div
+      b Status
+      p= merchant.status
+    div
+      b Description
+      p= merchant.description
+    div
+      .p-2= link_to 'Edit', edit_merchant_path(merchant)
+      .p-2= link_to 'Back', merchants_path

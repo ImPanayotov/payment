@@ -1,0 +1,9 @@
+table.table.table-hover
+  thead
+    th Name
+    th Email
+    th Actions
+  tbody
+    = render partial: 'merchants/tr',
+             collection: merchants,
+             as: :merchant
