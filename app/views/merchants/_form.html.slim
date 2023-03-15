@@ -1,0 +1,14 @@
+= simple_form_for(merchant) do |f|
+    .div.row.g-3.align-items-center.text-center
+        .div
+            = f.input :name
+        .div
+            = f.input :email
+        .div
+            = f.input :description
+        .div
+            = f.select :status, Merchant::statuses.keys
+        .div
+            = f.submit 'Save'
+        .div
+            = link_to 'Back', merchants_path

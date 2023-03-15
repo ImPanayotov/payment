@@ -1,0 +1,11 @@
+tr
+  td = merchant.name
+  td = merchant.email
+  td class=('d-flex')
+    p.p-2= link_to 'Show', merchant_path(merchant)
+    p.p-2= link_to 'Edit', edit_merchant_path(merchant)
+    p.p-2= link_to 'New', new_merchant_path
+    p.p-2= link_to 'Destroy',
+               merchant_path(merchant),
+               data: { turbo_method: :delete,
+                       turbo_confirm: 'Are you sure?' }
