@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_12_151543) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_151543) do
     t.decimal "total_transaction_sum", precision: 8, scale: 2, default: "0.0"
     t.index ["email"], name: "index_merchants_on_email", unique: true
     t.index ["reset_password_token"], name: "index_merchants_on_reset_password_token", unique: true
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
+    t.bigint "merchant_id"
+    t.integer "status", default: 0, null: false
+    t.string "customer_email", default: "", null: false
+    t.string "customer_phone", default: "", null: false
+    t.text "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_transactions_on_merchant_id"
   end
 
   create_table "users", force: :cascade do |t|

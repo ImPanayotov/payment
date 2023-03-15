@@ -14,3 +14,8 @@ div.text-center
     div
       .p-2= link_to 'Edit', edit_merchant_path(merchant)
       .p-2= link_to 'Back', merchants_path
+
+div.text-center
+  h2 Transactions
+  = render partial: 'merchants/transactions/table',
+          locals: { transactions: transactions }

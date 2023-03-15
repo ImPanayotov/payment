@@ -1,0 +1,11 @@
+table.table.table-hover
+  thead
+    th UUID
+    th Amount
+    th Status
+    th Customer Email
+    th Customer Phone
+  tbody
+    = render partial: 'merchants/transactions/tr',
+            collection: transactions,
+            as: :transaction
