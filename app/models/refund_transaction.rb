@@ -1,0 +1,2 @@
+class RefundTransaction < Transaction
+end
