@@ -8,9 +8,11 @@ class MerchantsController < ApplicationController
 
   def show
     merchant = find_merchant
+    transactions = merchant.transactions
 
     render 'merchants/show',
-           locals: { merchant: merchant }
+           locals: { merchant: merchant,
+                     transactions: transactions }
   end
 
   def edit
@@ -24,8 +26,8 @@ class MerchantsController < ApplicationController
     merchant = find_merchant
 
     if merchant.update(merchant_params)
-      redirect_to merchant_path,
-                  notice: 'Merchant successfully updated!'
+      redirect_to merchant_path(merchant),
+                  flash: { notice: 'Merchant successfully updated!' }
     else
       render 'merchants/edit',
              locals: { merchant: merchant }
