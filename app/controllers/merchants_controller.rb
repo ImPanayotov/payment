@@ -9,6 +9,8 @@ class MerchantsController < ApplicationController
   def show
     merchant = find_merchant
     transactions = merchant.transactions
+                           .includes(:customer)
+                           .order(id: :desc)
 
     render 'merchants/show',
            locals: { merchant: merchant,
@@ -27,7 +29,7 @@ class MerchantsController < ApplicationController
 
     if merchant.update(merchant_params)
       redirect_to merchant_path(merchant),
-                  flash: { notice: 'Merchant successfully updated!' }
+                  notice: 'Merchant successfully updated!'
     else
       render 'merchants/edit',
              locals: { merchant: merchant }
@@ -58,7 +60,7 @@ class MerchantsController < ApplicationController
 
     merchant.destroy
     redirect_to merchants_path,
-                notice: 'Merchant was successfully removed!'
+                flash: { notice: 'Merchant was successfully removed!' }
   end
 
   private
@@ -73,10 +75,18 @@ class MerchantsController < ApplicationController
   end
 
   def merchant_attrs
+    action_name == 'create' ? create_merchant_attrs : update_merchant_attrs
+  end
+
+  def update_merchant_attrs
     %i[name
        email
        status
        description
        total_transaction_sum]
+  end
+
+  def create_merchant_attrs
+    update_merchant_attrs + %i[password password_confirmation]
   end
 end
