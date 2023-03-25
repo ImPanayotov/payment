@@ -1,10 +1,14 @@
 h1.text-center Welcome Dashboard
 
-h2.text-center= "Currently having #{merchants_count} merchant(s) with total of #{transactions_count} transaction(s)."
+h2.text-center= "Currently having: #{merchants_count} merchant(s) and #{customers_count} customer(s) with total of #{transactions_count} transaction(s)."
 
 .div.text-center.pb-2
   .button.btn.btn-primary
     = link_to 'View all Merchants', merchants_path, class: 'btn'
+
+.div.text-center.pb-2
+  .button.btn.btn-primary
+    = link_to 'View all Customers', customers_path, class: 'btn'
 
 .div.text-center.pb-2
   .button.btn.btn-primary

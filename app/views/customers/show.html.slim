@@ -1,0 +1,32 @@
+h1.text-center = customer.name
+
+div.text-center
+  div.d-inline-flex.text-center.card style='width: 18rem'
+    div
+      b First Name
+      p= customer.first_name
+
+    div
+      b Last Name
+      p= customer.last_name
+
+    div
+      b Phone
+      p= customer.phone
+
+    div
+      b Email
+      p= customer.email
+
+    div
+      b Available Amount
+      p= humanized_money_with_symbol customer.amount
+
+    div
+      .p-2= link_to 'Edit', edit_customer_path(customer)
+      .p-2= link_to 'Back', customers_path
+
+div.text-center
+  h2 Transactions
+  = render partial: 'shared/transactions/table',
+          locals: { transactions: transactions }

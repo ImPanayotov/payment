@@ -1,14 +1,22 @@
 - disable_password = action_name == 'edit' ? true : false
 
-= simple_form_for(merchant) do |f|
+= simple_form_for(customer) do |f|
   .div.text-center
-    = merchant.errors.messages
+    = customer.errors.messages
 
   .div.row.g-3.align-items-center.text-center
     .form-group
       .div
-        = f.label :name, 'Name'
-        = f.input :name, label: false
+        = f.label :first_name, 'First Name'
+        = f.input :first_name, label: false
+
+      .div
+        = f.label :last_name, 'Last Name'
+        = f.input :last_name, label: false
+
+      .div
+        = f.label :phone, 'Phone'
+        = f.input :phone, label: false
 
       .div
         = f.label :email, 'Email'
@@ -17,14 +25,6 @@
                   autofocus: true,
                   input_html: { autocomplete: "email" },
                   label: false
-
-      .div
-        = f.label :description, 'Description'
-        = f.input :description, label: false
-
-      .div
-        = f.label :status, 'Status'
-        = f.select :status, Merchant::statuses.keys, label: false
 
     .form-group
       .div
@@ -48,4 +48,4 @@
       = f.submit 'Save', data: { turbo: false }
 
     .div
-      .p-2= link_to 'Back', merchants_path
+      .p-2= link_to 'Back', customers_path

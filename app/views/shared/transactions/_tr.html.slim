@@ -1,7 +1,11 @@
 tr
-  td = transaction.merchant_id
-  td = transaction.uuid
-  td = transaction.amount
-  td = transaction.status
-  td = transaction.customer_email
-  td = transaction.customer_phone
+  td= transaction.id
+  td= transaction.uuid
+  td= transaction.follow_transaction_id
+  td= transaction.type
+  td= transaction.status
+  td= humanized_money_with_symbol transaction.amount
+  td= transaction.merchant.name
+  td= transaction.customer.name
+  td= transaction.customer.email
+  td= transaction.customer.phone
