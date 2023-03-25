@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class DeviseCreateMerchants < ActiveRecord::Migration[7.0]
+class DeviseCreateCustomers < ActiveRecord::Migration[7.0]
   def change
-    create_table :merchants do |t|
+    create_table :customers do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
@@ -31,17 +31,18 @@ class DeviseCreateMerchants < ActiveRecord::Migration[7.0]
       # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
-      t.string :name, null: false, default: '', length: 255
-      t.text :description
-      t.integer :status, null: false, default: 0
-      t.monetize :total_transaction_sum
+      t.string :first_name
+      t.string :last_name
+      t.string :phone
+      t.decimal :total_transaction_sum, precision: 8, scale: 2, default: 0
+      t.monetize :amount
 
       t.timestamps null: false
     end
 
-    add_index :merchants, :email,                unique: true
-    add_index :merchants, :reset_password_token, unique: true
-    # add_index :merchants, :confirmation_token,   unique: true
-    # add_index :merchants, :unlock_token,         unique: true
+    add_index :customers, :email,                unique: true
+    add_index :customers, :reset_password_token, unique: true
+    # add_index :customers, :confirmation_token,   unique: true
+    # add_index :customers, :unlock_token,         unique: true
   end
 end
