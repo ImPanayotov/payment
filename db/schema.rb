@@ -10,9 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_192312) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "customers", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.decimal "total_transaction_sum", precision: 8, scale: 2, default: "0.0"
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_customers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
+  end
 
   create_table "merchants", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -20,13 +38,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "name", default: "", null: false
     t.text "description"
     t.integer "status", default: 0, null: false
-    t.decimal "total_transaction_sum", precision: 8, scale: 2, default: "0.0"
+    t.integer "total_transaction_sum_cents", default: 0, null: false
+    t.string "total_transaction_sum_currency", default: "USD", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jti"
     t.index ["email"], name: "index_merchants_on_email", unique: true
+    t.index ["jti"], name: "index_merchants_on_jti"
     t.index ["reset_password_token"], name: "index_merchants_on_reset_password_token", unique: true
   end
 
@@ -35,12 +56,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "USD", null: false
     t.bigint "merchant_id"
+    t.bigint "follow_transaction_id"
     t.integer "status", default: 0, null: false
-    t.string "customer_email", default: "", null: false
-    t.string "customer_phone", default: "", null: false
+    t.string "type", default: "", null: false
     t.text "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "customer_id"
+    t.index ["customer_id"], name: "index_transactions_on_customer_id"
+    t.index ["follow_transaction_id"], name: "index_transactions_on_follow_transaction_id"
     t.index ["merchant_id"], name: "index_transactions_on_merchant_id"
   end
 
@@ -52,8 +76,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role", default: "client", null: false
+    t.string "name", default: "", null: false
+    t.text "description"
+    t.integer "status", default: 0, null: false
+    t.decimal "total_transaction_sum", precision: 8, scale: 2, default: "0.0"
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "transactions", "customers"
+  add_foreign_key "transactions", "transactions", column: "follow_transaction_id"
 end
