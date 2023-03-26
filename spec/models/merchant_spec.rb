@@ -23,6 +23,10 @@ RSpec.describe Merchant, type: :model do
     end
   end
 
+  describe 'monetize' do
+    it { is_expected.to monetize(:total_transaction_sum_cents).with_currency(:usd) }
+  end
+
   describe 'columns' do
     it do
       is_expected.to have_db_column(:name)

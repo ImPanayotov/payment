@@ -23,6 +23,10 @@ RSpec.describe Customer, type: :model do
     it { is_expected.to allow_value('customer@email.com').for(:email) }
   end
 
+  describe 'monetize' do
+    it { is_expected.to monetize(:amount_cents).with_currency(:usd) }
+  end
+
   describe 'columns' do
     %i[first_name last_name].each do |column|
       it do

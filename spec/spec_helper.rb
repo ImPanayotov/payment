@@ -6,7 +6,7 @@ require 'rspec/rails'
 require 'database_cleaner/active_record'
 require 'json_matchers/rspec'
 require 'shoulda/matchers'
-
+require 'money-rails/test_helpers'
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
