@@ -10,6 +10,10 @@ class Customer < ApplicationRecord
 
   monetize :amount_cents
 
+  validates :first_name, :last_name, { presence: true, length: { maximum: 255 } }
+  validates :phone, { presence: true, length: { maximum: 15 } }
+  validates :email, presence: true, email: true
+
   def name
     "#{first_name} #{last_name}"
   end
