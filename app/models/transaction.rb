@@ -1,5 +1,12 @@
 class Transaction < ApplicationRecord
+  before_create :generate_uuid
+
   belongs_to :merchant
+  belongs_to :customer
+  has_many :follow_transactions,
+           class_name: 'Transaction',
+           foreign_key: 'follow_transaction_id',
+           dependent: :restrict_with_error
 
   enum :status, { approved: 0,
                   reversed: 1,
@@ -7,5 +14,14 @@ class Transaction < ApplicationRecord
                   error: 3 },
        _suffix: true
 
+  TYPES = %i[authorize
+             charge
+             reversal
+             refund].freeze
+
   monetize :amount_cents
+
+  def generate_uuid
+    self.uuid = SecureRandom.uuid
+  end
 end

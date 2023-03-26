@@ -2,9 +2,11 @@ class WelcomeController < ApplicationController
   def index
     transactions_count = Transaction.count
     merchants_count = Merchant.count
+    customers_count = Customer.count
 
     render 'welcome/index',
-           locals: { transactions_count: transactions_count,
-                     merchants_count: merchants_count }
+           locals: { transactions_count:,
+                     merchants_count:,
+                     customers_count: }
   end
 end

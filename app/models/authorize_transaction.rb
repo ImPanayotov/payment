@@ -1,0 +1,2 @@
+class AuthorizeTransaction < Transaction
+end

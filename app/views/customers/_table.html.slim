@@ -1,0 +1,13 @@
+table.table.table-hover
+  thead
+    th ID
+    th First Name
+    th Last Name
+    th Phone
+    th Email
+    th Available Amount
+    th Actions
+  tbody
+    = render partial: 'customers/tr',
+             collection: customers,
+             as: :customer

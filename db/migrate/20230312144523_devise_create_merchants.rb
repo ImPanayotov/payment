@@ -31,7 +31,10 @@ class DeviseCreateMerchants < ActiveRecord::Migration[7.0]
       # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
-
+      t.string :name, null: false, default: '', length: 255
+      t.text :description
+      t.integer :status, null: false, default: 0
+      t.monetize :total_transaction_sum
 
       t.timestamps null: false
     end
