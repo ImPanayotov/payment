@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  include Devise::JWT::RevocationStrategies::JTIMatcher
+  # include Devise::JWT::RevocationStrategies::JTIMatcher
 
-  ROLES = %i[admin client merchant]
+  ROLES = %w[admin user].freeze
 
   devise :database_authenticatable,
          :registerable,
@@ -13,17 +13,29 @@ class User < ApplicationRecord
          :rememberable,
          jwt_revocation_strategy: self
 
-  has_many :transactions, dependent: :restrict_with_exception
+  enum status: { active: 0, inactive: 1 }
 
-  enum :status, { active: 0, inactive: 1 }
+  validates :first_name,
+            :last_name,
+            length: { maximum: 255 }
 
-  monetize :amount_cents
+  validates :email,
+            :role,
+            :first_name,
+            :last_name,
+            :status,
+            presence: true
+
+  validates :email,
+            email: true
+
+  validates :role,
+            inclusion: { in: ROLES }
 
   scope :with_role, ->(role) { where(role:) }
 
   scope :admins, -> { with_role(:admin) }
-  scope :clients, -> { with_role(:client) }
-  scope :merchants, -> { with_role(:merchant) }
+  scope :users, -> { with_role(:user) }
 
 
   ROLES.each do |role|
