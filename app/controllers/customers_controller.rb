@@ -79,6 +79,7 @@ class CustomersController < ApplicationController
   def update_customer_attrs
     %i[first_name
        last_name
+       phone
        email
        total_transaction_sum]
   end

@@ -4,7 +4,9 @@ module Api
       # include MerchantsBasicAuthConcern
 
       def authorize_transaction
-        transaction = AuthorizeTransaction.create!(transaction_params)
+        transaction = AuthorizeTransaction.create!(transaction_params) do |t|
+          t.generate_uuid
+        end
 
         authorize(transaction)
 
@@ -26,7 +28,9 @@ module Api
       end
 
       def refund_transaction
-        transaction = RefundTransaction.create!(transaction_params)
+        transaction = RefundTransaction.create!(transaction_params) do |t|
+          t.generate_uuid
+        end
 
         authorize(transaction)
 

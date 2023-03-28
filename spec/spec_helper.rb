@@ -12,6 +12,9 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+# If at some point your booting time is getting ridiculously long -
+# refactor to require only necessary files when they're needed.
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 JsonMatchers.schema_root = 'spec/support/api/schemas'
 
@@ -96,4 +99,6 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
+
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
