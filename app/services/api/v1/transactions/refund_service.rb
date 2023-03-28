@@ -24,7 +24,11 @@ module Api
         end
 
         def call
+          validate_customer!(customer)
+
           charge_transaction = find_charge_txn
+          validate_charge_transaction!(charge_transaction)
+
           charge_transaction_refunded?(charge_transaction)
 
           ActiveRecord::Base.transaction do
@@ -35,27 +39,37 @@ module Api
             update_customer_amount(charge_transaction, customer, '+')
             update_merchant_total_txn_sum(charge_transaction, current_merchant, '-')
 
-            charge_transaction.refunded!
+            charge_transaction.refunded_status!
           end
 
           success!
-        rescue ::Transactions::RefundedTransactions::AlreadyRefundedError,
+        rescue ::Transactions::RefundedTransactions::NotExistingCustomerError,
+               ::Transactions::RefundedTransactions::NotExistingTransactionError,
+               ::Transactions::RefundedTransactions::AlreadyRefundedError,
                StandardError => e
-          transaction.error!
+          transaction.error_status!
           errors.add(:base, e.message)
         end
 
         private
 
         def find_charge_txn
-          ChargeTransaction.find_by!(amount_cents:,
+          ChargeTransaction.find_by(amount_cents:,
                                      customer_id: customer.id,
                                      merchant_id: current_merchant.id,
                                      uuid:)
         end
 
+        def transaction_type
+          'RefundedTransactions'
+        end
+
         def charge_transaction_refunded?(transaction)
-          raise ::Transactions::RefundedTransactions::AlreadyRefundedError if transaction.refunded?
+          raise ::Transactions::RefundedTransactions::AlreadyRefundedError if transaction.refunded_status?
+        end
+
+        def validate_charge_transaction!(transaction)
+          raise ::Transactions::RefundedTransactions::NotExistingTransactionError unless transaction
         end
       end
     end
