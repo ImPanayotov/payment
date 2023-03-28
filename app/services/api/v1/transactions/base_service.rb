@@ -1,3 +1,5 @@
+require 'exceptions/transactions'
+
 module Api
   module V1
     module Transactions
@@ -27,7 +29,21 @@ module Api
         end
 
         def find_customer(transaction_params)
-          Customer.find(transaction_params[:customer_id])
+          Customer.find_by(id: transaction_params[:customer_id])
+        end
+
+        def validate_customer!(customer)
+          raise "::Transactions::#{transaction_type}::NotExistingCustomerError".constantize unless customer
+        end
+
+        
+
+        def valid_amount?(customer, transaction)
+          customer.amount >= transaction.amount
+        end
+
+        def transaction_type
+          raise NotImplemented
         end
       end
     end

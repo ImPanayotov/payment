@@ -22,6 +22,7 @@ module Api
           ActiveRecord::Base.transaction do
             ChargeTransaction.create!(transaction_params) do |t|
               t.follow_transaction_id = transaction.id
+              t.generate_uuid
             end
 
             update_customer_amount(transaction, customer, '-')

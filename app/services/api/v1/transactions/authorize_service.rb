@@ -1,3 +1,5 @@
+require 'exceptions/transactions'
+
 module Api
   module V1
     module Transactions
@@ -17,8 +19,9 @@ module Api
 
         def call
           customer = find_customer(transaction_params)
+          validate_customer!(customer)
 
-          if customer.amount >= transaction.amount
+          if valid_amount?(customer, transaction)
             charge_service.new(transaction_params:,
                                transaction:,
                                current_merchant:,
@@ -29,9 +32,16 @@ module Api
           end
 
           success!
-        rescue StandardError => error
-          transaction.error!
+        rescue ::Transactions::AuthorizedTransactions::NotExistingCustomerError,
+               StandardError => error
+          transaction.error_status!
           errors.add(:base, error.message)
+        end
+
+        private
+
+        def transaction_type
+          'AuthorizedTransactions'
         end
       end
     end
