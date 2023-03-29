@@ -4,6 +4,7 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { "#{first_name.chr}.#{last_name}@#{Faker::Internet.domain_name}" }
     password { 'Password123!' }
+    role { 'user' }
 
     trait :admin do
       role { 'admin' }

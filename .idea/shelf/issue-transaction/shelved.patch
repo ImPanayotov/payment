@@ -1,0 +1,734 @@
+Index: config/locales/simple_form.en.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config/locales/simple_form.en.yml b/config/locales/simple_form.en.yml
+new file mode 100644
+--- /dev/null	(date 1678870235764)
++++ b/config/locales/simple_form.en.yml	(date 1678870235764)
+@@ -0,0 +1,31 @@
++en:
++  simple_form:
++    "yes": 'Yes'
++    "no": 'No'
++    required:
++      text: 'required'
++      mark: '*'
++      # You can uncomment the line below if you need to overwrite the whole required html.
++      # When using html, text and mark won't be used.
++      # html: '<abbr title="required">*</abbr>'
++    error_notification:
++      default_message: "Please review the problems below:"
++    # Examples
++    # labels:
++    #   defaults:
++    #     password: 'Password'
++    #   user:
++    #     new:
++    #       email: 'E-mail to sign in.'
++    #     edit:
++    #       email: 'E-mail.'
++    # hints:
++    #   defaults:
++    #     username: 'User name to sign in.'
++    #     password: 'No special characters, please.'
++    # include_blanks:
++    #   defaults:
++    #     age: 'Rather not say'
++    # prompts:
++    #   defaults:
++    #     age: 'Select your age'
+Index: lib/templates/slim/scaffold/_form.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/templates/slim/scaffold/_form.html.slim b/lib/templates/slim/scaffold/_form.html.slim
+new file mode 100644
+--- /dev/null	(date 1678870235764)
++++ b/lib/templates/slim/scaffold/_form.html.slim	(date 1678870235764)
+@@ -0,0 +1,11 @@
++= simple_form_for(@<%= singular_table_name %>) do |f|
++  = f.error_notification
++  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
++
++  .form-inputs
++<%- attributes.each do |attribute| -%>
++    = f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %>
++<%- end -%>
++
++  .form-actions
++    = f.button :submit
+Index: config/routes.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>Rails.application.routes.draw do\n  devise_for :users\n  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html\n\n  # Defines the root path route (\"/\")\n  # root \"articles#index\"\nend\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config/routes.rb b/config/routes.rb
+--- a/config/routes.rb	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/config/routes.rb	(date 1678868131210)
+@@ -1,5 +1,8 @@
+ Rails.application.routes.draw do
+   devise_for :users
++  root 'merchants#index'
++
++  resources :merchants
+   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+ 
+   # Defines the root path route ("/")
+Index: config/initializers/simple_form.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config/initializers/simple_form.rb b/config/initializers/simple_form.rb
+new file mode 100644
+--- /dev/null	(date 1678870235764)
++++ b/config/initializers/simple_form.rb	(date 1678870235764)
+@@ -0,0 +1,176 @@
++# frozen_string_literal: true
++#
++# Uncomment this and change the path if necessary to include your own
++# components.
++# See https://github.com/heartcombo/simple_form#custom-components to know
++# more about custom components.
++# Dir[Rails.root.join('lib/components/**/*.rb')].each { |f| require f }
++#
++# Use this setup block to configure all options available in SimpleForm.
++SimpleForm.setup do |config|
++  # Wrappers are used by the form builder to generate a
++  # complete input. You can remove any component from the
++  # wrapper, change the order or even add your own to the
++  # stack. The options given below are used to wrap the
++  # whole input.
++  config.wrappers :default, class: :input,
++    hint_class: :field_with_hint, error_class: :field_with_errors, valid_class: :field_without_errors do |b|
++    ## Extensions enabled by default
++    # Any of these extensions can be disabled for a
++    # given input by passing: `f.input EXTENSION_NAME => false`.
++    # You can make any of these extensions optional by
++    # renaming `b.use` to `b.optional`.
++
++    # Determines whether to use HTML5 (:email, :url, ...)
++    # and required attributes
++    b.use :html5
++
++    # Calculates placeholders automatically from I18n
++    # You can also pass a string as f.input placeholder: "Placeholder"
++    b.use :placeholder
++
++    ## Optional extensions
++    # They are disabled unless you pass `f.input EXTENSION_NAME => true`
++    # to the input. If so, they will retrieve the values from the model
++    # if any exists. If you want to enable any of those
++    # extensions by default, you can change `b.optional` to `b.use`.
++
++    # Calculates maxlength from length validations for string inputs
++    # and/or database column lengths
++    b.optional :maxlength
++
++    # Calculate minlength from length validations for string inputs
++    b.optional :minlength
++
++    # Calculates pattern from format validations for string inputs
++    b.optional :pattern
++
++    # Calculates min and max from length validations for numeric inputs
++    b.optional :min_max
++
++    # Calculates readonly automatically from readonly attributes
++    b.optional :readonly
++
++    ## Inputs
++    # b.use :input, class: 'input', error_class: 'is-invalid', valid_class: 'is-valid'
++    b.use :label_input
++    b.use :hint,  wrap_with: { tag: :span, class: :hint }
++    b.use :error, wrap_with: { tag: :span, class: :error }
++
++    ## full_messages_for
++    # If you want to display the full error message for the attribute, you can
++    # use the component :full_error, like:
++    #
++    # b.use :full_error, wrap_with: { tag: :span, class: :error }
++  end
++
++  # The default wrapper to be used by the FormBuilder.
++  config.default_wrapper = :default
++
++  # Define the way to render check boxes / radio buttons with labels.
++  # Defaults to :nested for bootstrap config.
++  #   inline: input + label
++  #   nested: label > input
++  config.boolean_style = :nested
++
++  # Default class for buttons
++  config.button_class = 'btn'
++
++  # Method used to tidy up errors. Specify any Rails Array method.
++  # :first lists the first message for each field.
++  # Use :to_sentence to list all errors for each field.
++  # config.error_method = :first
++
++  # Default tag used for error notification helper.
++  config.error_notification_tag = :div
++
++  # CSS class to add for error notification helper.
++  config.error_notification_class = 'error_notification'
++
++  # Series of attempts to detect a default label method for collection.
++  # config.collection_label_methods = [ :to_label, :name, :title, :to_s ]
++
++  # Series of attempts to detect a default value method for collection.
++  # config.collection_value_methods = [ :id, :to_s ]
++
++  # You can wrap a collection of radio/check boxes in a pre-defined tag, defaulting to none.
++  # config.collection_wrapper_tag = nil
++
++  # You can define the class to use on all collection wrappers. Defaulting to none.
++  # config.collection_wrapper_class = nil
++
++  # You can wrap each item in a collection of radio/check boxes with a tag,
++  # defaulting to :span.
++  # config.item_wrapper_tag = :span
++
++  # You can define a class to use in all item wrappers. Defaulting to none.
++  # config.item_wrapper_class = nil
++
++  # How the label text should be generated altogether with the required text.
++  # config.label_text = lambda { |label, required, explicit_label| "#{required} #{label}" }
++
++  # You can define the class to use on all labels. Default is nil.
++  # config.label_class = nil
++
++  # You can define the default class to be used on forms. Can be overridden
++  # with `html: { :class }`. Defaulting to none.
++  # config.default_form_class = nil
++
++  # You can define which elements should obtain additional classes
++  # config.generate_additional_classes_for = [:wrapper, :label, :input]
++
++  # Whether attributes are required by default (or not). Default is true.
++  # config.required_by_default = true
++
++  # Tell browsers whether to use the native HTML5 validations (novalidate form option).
++  # These validations are enabled in SimpleForm's internal config but disabled by default
++  # in this configuration, which is recommended due to some quirks from different browsers.
++  # To stop SimpleForm from generating the novalidate option, enabling the HTML5 validations,
++  # change this configuration to true.
++  config.browser_validations = false
++
++  # Custom mappings for input types. This should be a hash containing a regexp
++  # to match as key, and the input type that will be used when the field name
++  # matches the regexp as value.
++  # config.input_mappings = { /count/ => :integer }
++
++  # Custom wrappers for input types. This should be a hash containing an input
++  # type as key and the wrapper that will be used for all inputs with specified type.
++  # config.wrapper_mappings = { string: :prepend }
++
++  # Namespaces where SimpleForm should look for custom input classes that
++  # override default inputs.
++  # config.custom_inputs_namespaces << "CustomInputs"
++
++  # Default priority for time_zone inputs.
++  # config.time_zone_priority = nil
++
++  # Default priority for country inputs.
++  # config.country_priority = nil
++
++  # When false, do not use translations for labels.
++  # config.translate_labels = true
++
++  # Automatically discover new inputs in Rails' autoload path.
++  # config.inputs_discovery = true
++
++  # Cache SimpleForm inputs discovery
++  # config.cache_discovery = !Rails.env.development?
++
++  # Default class for inputs
++  # config.input_class = nil
++
++  # Define the default class of the input wrapper of the boolean input.
++  config.boolean_label_class = 'checkbox'
++
++  # Defines if the default input wrapper class should be included in radio
++  # collection wrappers.
++  # config.include_default_input_wrapper_class = true
++
++  # Defines which i18n scope will be used in Simple Form.
++  # config.i18n_scope = 'simple_form'
++
++  # Defines validation classes to the input_field. By default it's nil.
++  # config.input_field_valid_class = 'is-valid'
++  # config.input_field_error_class = 'is-invalid'
++end
+Index: app/controllers/merchants_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/controllers/merchants_controller.rb b/app/controllers/merchants_controller.rb
+new file mode 100644
+--- /dev/null	(date 1678870566827)
++++ b/app/controllers/merchants_controller.rb	(date 1678870566827)
+@@ -0,0 +1,80 @@
++class MerchantsController < ApplicationController
++  def index
++    merchants = Merchant.all
++
++    render 'merchants/index',
++           locals: { merchants: merchants }
++  end
++
++  def show
++    merchant = find_merchant
++
++    render 'merchants/show',
++           locals: { merchant: merchant }
++  end
++
++  def edit
++    merchant = find_merchant
++
++    render 'merchants/edit',
++           locals: { merchant: merchant }
++  end
++
++  def update
++    merchant = find_merchant
++
++    if merchant.update(merchant_params)
++      redirect_to merchant_path,
++                  notice: 'Merchant successfully updated!'
++    else
++      render 'merchants/edit',
++             locals: { merchant: merchant }
++    end
++  end
++
++  def new
++    merchant = Merchant.new
++
++    render 'merchants/new',
++           locals: { merchant: merchant }
++  end
++
++  def create
++    merchant = Merchant.new(merchant_params)
++
++    if merchant.save
++      redirect_to merchant_path(merchant),
++                  notice: 'Merchant successfully created!'
++    else
++      render 'merchants/new',
++             locals: { merchant: merchant }
++    end
++  end
++
++  def destroy
++    merchant = find_merchant
++
++    merchant.destroy
++    redirect_to merchants_path,
++                notice: 'Merchant was successfully removed!'
++  end
++
++  private
++
++  def find_merchant
++    Merchant.find(params[:id])
++  end
++
++  def merchant_params
++    params.require(:merchant)
++          .permit(merchant_attrs)
++  end
++
++  def merchant_attrs
++    %i[name
++       email
++       status
++       description
++       total_transaction_sum]
++  end
++end
+Index: app/assets/stylesheets/application.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/assets/stylesheets/application.css b/app/assets/stylesheets/application.scss
+rename from app/assets/stylesheets/application.css
+rename to app/assets/stylesheets/application.scss
+--- a/app/assets/stylesheets/application.css	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/app/assets/stylesheets/application.scss	(date 1678864808028)
+@@ -13,3 +13,5 @@
+  *= require_tree .
+  *= require_self
+  */
++
++@import "bootstrap";
+Index: app/views/merchants/_tr.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/_tr.html.slim b/app/views/merchants/_tr.html.slim
+new file mode 100644
+--- /dev/null	(date 1678880911904)
++++ b/app/views/merchants/_tr.html.slim	(date 1678880911904)
+@@ -0,0 +1,11 @@
++tr
++  td = merchant.name
++  td = merchant.email
++  td class=('d-flex')
++    p.p-2= link_to 'Show', merchant_path(merchant)
++    p.p-2= link_to 'Edit', edit_merchant_path(merchant)
++    p.p-2= link_to 'New', new_merchant_path
++    p.p-2= link_to 'Destroy',
++               merchant_path(merchant),
++               data: { turbo_method: :delete,
++                       turbo_confirm: 'Are you sure?' }
+Index: app/views/merchants/_table.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/_table.html.slim b/app/views/merchants/_table.html.slim
+new file mode 100644
+--- /dev/null	(date 1678867202424)
++++ b/app/views/merchants/_table.html.slim	(date 1678867202424)
+@@ -0,0 +1,9 @@
++table.table.table-hover
++  thead
++    th Name
++    th Email
++    th Actions
++  tbody
++    = render partial: 'merchants/tr',
++             collection: merchants,
++             as: :merchant
+Index: app/models/merchant.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>class Merchant < ApplicationRecord\nend\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/models/merchant.rb b/app/models/merchant.rb
+--- a/app/models/merchant.rb	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/app/models/merchant.rb	(date 1678879732705)
+@@ -1,2 +1,3 @@
+ class Merchant < ApplicationRecord
++  enum :status, { active: 0, inactive: 1 }
+ end
+Index: app/views/merchants/index.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/index.html.slim b/app/views/merchants/index.html.slim
+new file mode 100644
+--- /dev/null	(date 1678867234451)
++++ b/app/views/merchants/index.html.slim	(date 1678867234451)
+@@ -0,0 +1,4 @@
++h1 Merchants
++
++= render partial: 'merchants/table',
++         locals: { merchants: merchants }
+Index: app/views/merchants/edit.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/edit.html.slim b/app/views/merchants/edit.html.slim
+new file mode 100644
+--- /dev/null	(date 1678870597891)
++++ b/app/views/merchants/edit.html.slim	(date 1678870597891)
+@@ -0,0 +1,2 @@
++= render partial: 'merchants/form',
++        locals: { merchant: merchant }
+Index: app/views/merchants/new.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/new.html.slim b/app/views/merchants/new.html.slim
+new file mode 100644
+--- /dev/null	(date 1678868368513)
++++ b/app/views/merchants/new.html.slim	(date 1678868368513)
+@@ -0,0 +1,2 @@
++= render partial: 'merchants/form',
++        locals: { merchant: merchant }
+Index: Gemfile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># frozen_string_literal: true\n\nsource 'https://rubygems.org'\ngit_source(:github) { |repo| \"https://github.com/#{repo}.git\" }\n\nruby '3.2.0'\ngem 'bootsnap', require: false\ngem 'devise'\ngem 'importmap-rails'\ngem 'jbuilder'\ngem 'money-rails'\ngem 'pg', '~> 1.1'\ngem 'puma', '~> 5.0'\ngem 'rails', '~> 7.0.4', '>= 7.0.4.2'\ngem 'redis', '~> 4.0'\ngem 'sprockets-rails'\ngem 'stimulus-rails'\ngem 'turbo-rails'\ngem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]\n\ngroup :development, :test do\n  gem 'database_cleaner-active_record'\n  gem 'debug', platforms: %i[mri mingw x64_mingw]\n  gem 'factory_bot_rails'\n  gem 'faker'\n  gem 'pry'\n  gem 'rspec-rails'\nend\n\ngroup :development do\n  gem 'bullet'\n  gem 'rubocop', require: false\n  gem 'rubocop-rails', require: false\n  gem 'rubocop-rspec', require: false\n  gem 'web-console'\nend\n\ngroup :test do\n  gem 'capybara'\n  gem 'json_matchers'\n  gem 'selenium-webdriver'\n  gem 'shoulda-matchers', '~> 5.0'\n  gem 'webdrivers'\nend\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Gemfile b/Gemfile
+--- a/Gemfile	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/Gemfile	(date 1678870136484)
+@@ -5,6 +5,7 @@
+ 
+ ruby '3.2.0'
+ gem 'bootsnap', require: false
++gem 'bootstrap', '~> 5.2.2'
+ gem 'devise'
+ gem 'importmap-rails'
+ gem 'jbuilder'
+@@ -13,7 +14,9 @@
+ gem 'puma', '~> 5.0'
+ gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
+ gem 'redis', '~> 4.0'
++gem 'simple_form'
+ gem 'sprockets-rails'
++gem 'slim-rails'
+ gem 'stimulus-rails'
+ gem 'turbo-rails'
+ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+Index: app/views/merchants/show.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/show.html.slim b/app/views/merchants/show.html.slim
+new file mode 100644
+--- /dev/null	(date 1678880935093)
++++ b/app/views/merchants/show.html.slim	(date 1678880935093)
+@@ -0,0 +1,16 @@
++h1.text-center = merchant.name
++
++div.text-center
++  div.d-inline-flex.text-center.card style='width: 18rem'
++    div
++      b Name
++      p= merchant.name
++    div
++      b Status
++      p= merchant.status
++    div
++      b Description
++      p= merchant.description
++    div
++      .p-2= link_to 'Edit', edit_merchant_path(merchant)
++      .p-2= link_to 'Back', merchants_path
+Index: app/presenters/merchant_presenter.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/presenters/merchant_presenter.rb b/app/presenters/merchant_presenter.rb
+new file mode 100644
+--- /dev/null	(date 1678864234646)
++++ b/app/presenters/merchant_presenter.rb	(date 1678864234646)
+@@ -0,0 +1,7 @@
++class MerchantPresenter
++  def initialize(merchant)
++    @merchant = merchant
++  end
++  
++
++end
+Index: app/views/merchants/_form.html.slim
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/views/merchants/_form.html.slim b/app/views/merchants/_form.html.slim
+new file mode 100644
+--- /dev/null	(date 1678880247797)
++++ b/app/views/merchants/_form.html.slim	(date 1678880247797)
+@@ -0,0 +1,14 @@
++= simple_form_for(merchant) do |f|
++    .div.row.g-3.align-items-center.text-center
++        .div
++            = f.input :name
++        .div
++            = f.input :email
++        .div
++            = f.input :description
++        .div
++            = f.select :status, Merchant::statuses.keys
++        .div
++            = f.submit 'Save'
++        .div
++            = link_to 'Back', merchants_path
+Index: Gemfile.lock
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>GEM\n  remote: https://rubygems.org/\n  specs:\n    actioncable (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      nio4r (~> 2.0)\n      websocket-driver (>= 0.6.1)\n    actionmailbox (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      activejob (= 7.0.4.2)\n      activerecord (= 7.0.4.2)\n      activestorage (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      mail (>= 2.7.1)\n      net-imap\n      net-pop\n      net-smtp\n    actionmailer (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      actionview (= 7.0.4.2)\n      activejob (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      mail (~> 2.5, >= 2.5.4)\n      net-imap\n      net-pop\n      net-smtp\n      rails-dom-testing (~> 2.0)\n    actionpack (7.0.4.2)\n      actionview (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      rack (~> 2.0, >= 2.2.0)\n      rack-test (>= 0.6.3)\n      rails-dom-testing (~> 2.0)\n      rails-html-sanitizer (~> 1.0, >= 1.2.0)\n    actiontext (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      activerecord (= 7.0.4.2)\n      activestorage (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      globalid (>= 0.6.0)\n      nokogiri (>= 1.8.5)\n    actionview (7.0.4.2)\n      activesupport (= 7.0.4.2)\n      builder (~> 3.1)\n      erubi (~> 1.4)\n      rails-dom-testing (~> 2.0)\n      rails-html-sanitizer (~> 1.1, >= 1.2.0)\n    activejob (7.0.4.2)\n      activesupport (= 7.0.4.2)\n      globalid (>= 0.3.6)\n    activemodel (7.0.4.2)\n      activesupport (= 7.0.4.2)\n    activerecord (7.0.4.2)\n      activemodel (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n    activestorage (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      activejob (= 7.0.4.2)\n      activerecord (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      marcel (~> 1.0)\n      mini_mime (>= 1.1.0)\n    activesupport (7.0.4.2)\n      concurrent-ruby (~> 1.0, >= 1.0.2)\n      i18n (>= 1.6, < 2)\n      minitest (>= 5.1)\n      tzinfo (~> 2.0)\n    addressable (2.8.1)\n      public_suffix (>= 2.0.2, < 6.0)\n    ast (2.4.2)\n    bcrypt (3.1.18)\n    bindex (0.8.1)\n    bootsnap (1.16.0)\n      msgpack (~> 1.2)\n    builder (3.2.4)\n    bullet (7.0.7)\n      activesupport (>= 3.0.0)\n      uniform_notifier (~> 1.11)\n    capybara (3.38.0)\n      addressable\n      matrix\n      mini_mime (>= 0.1.3)\n      nokogiri (~> 1.8)\n      rack (>= 1.6.0)\n      rack-test (>= 0.6.3)\n      regexp_parser (>= 1.5, < 3.0)\n      xpath (~> 3.2)\n    coderay (1.1.3)\n    concurrent-ruby (1.2.2)\n    crass (1.0.6)\n    database_cleaner-active_record (2.1.0)\n      activerecord (>= 5.a)\n      database_cleaner-core (~> 2.0.0)\n    database_cleaner-core (2.0.1)\n    date (3.3.3)\n    debug (1.7.1)\n      irb (>= 1.5.0)\n      reline (>= 0.3.1)\n    devise (4.9.0)\n      bcrypt (~> 3.0)\n      orm_adapter (~> 0.1)\n      railties (>= 4.1.0)\n      responders\n      warden (~> 1.2.3)\n    diff-lcs (1.5.0)\n    erubi (1.12.0)\n    factory_bot (6.2.1)\n      activesupport (>= 5.0.0)\n    factory_bot_rails (6.2.0)\n      factory_bot (~> 6.2.0)\n      railties (>= 5.0.0)\n    faker (3.1.1)\n      i18n (>= 1.8.11, < 2)\n    globalid (1.1.0)\n      activesupport (>= 5.0)\n    i18n (1.12.0)\n      concurrent-ruby (~> 1.0)\n    importmap-rails (1.1.5)\n      actionpack (>= 6.0.0)\n      railties (>= 6.0.0)\n    io-console (0.6.0)\n    irb (1.6.3)\n      reline (>= 0.3.0)\n    jbuilder (2.11.5)\n      actionview (>= 5.0.0)\n      activesupport (>= 5.0.0)\n    json (2.6.3)\n    json_matchers (0.11.1)\n      json_schema\n    json_schema (0.21.0)\n    loofah (2.19.1)\n      crass (~> 1.0.2)\n      nokogiri (>= 1.5.9)\n    mail (2.8.1)\n      mini_mime (>= 0.1.1)\n      net-imap\n      net-pop\n      net-smtp\n    marcel (1.0.2)\n    matrix (0.4.2)\n    method_source (1.0.0)\n    mini_mime (1.1.2)\n    minitest (5.18.0)\n    monetize (1.12.0)\n      money (~> 6.12)\n    money (6.16.0)\n      i18n (>= 0.6.4, <= 2)\n    money-rails (1.15.0)\n      activesupport (>= 3.0)\n      monetize (~> 1.9)\n      money (~> 6.13)\n      railties (>= 3.0)\n    msgpack (1.6.1)\n    net-imap (0.3.4)\n      date\n      net-protocol\n    net-pop (0.1.2)\n      net-protocol\n    net-protocol (0.2.1)\n      timeout\n    net-smtp (0.3.3)\n      net-protocol\n    nio4r (2.5.8)\n    nokogiri (1.14.2-x86_64-linux)\n      racc (~> 1.4)\n    orm_adapter (0.5.0)\n    parallel (1.22.1)\n    parser (3.2.1.1)\n      ast (~> 2.4.1)\n    pg (1.4.6)\n    pry (0.14.2)\n      coderay (~> 1.1)\n      method_source (~> 1.0)\n    public_suffix (5.0.1)\n    puma (5.6.5)\n      nio4r (~> 2.0)\n    racc (1.6.2)\n    rack (2.2.6.3)\n    rack-test (2.0.2)\n      rack (>= 1.3)\n    rails (7.0.4.2)\n      actioncable (= 7.0.4.2)\n      actionmailbox (= 7.0.4.2)\n      actionmailer (= 7.0.4.2)\n      actionpack (= 7.0.4.2)\n      actiontext (= 7.0.4.2)\n      actionview (= 7.0.4.2)\n      activejob (= 7.0.4.2)\n      activemodel (= 7.0.4.2)\n      activerecord (= 7.0.4.2)\n      activestorage (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      bundler (>= 1.15.0)\n      railties (= 7.0.4.2)\n    rails-dom-testing (2.0.3)\n      activesupport (>= 4.2.0)\n      nokogiri (>= 1.6)\n    rails-html-sanitizer (1.5.0)\n      loofah (~> 2.19, >= 2.19.1)\n    railties (7.0.4.2)\n      actionpack (= 7.0.4.2)\n      activesupport (= 7.0.4.2)\n      method_source\n      rake (>= 12.2)\n      thor (~> 1.0)\n      zeitwerk (~> 2.5)\n    rainbow (3.1.1)\n    rake (13.0.6)\n    redis (4.8.1)\n    regexp_parser (2.7.0)\n    reline (0.3.2)\n      io-console (~> 0.5)\n    responders (3.1.0)\n      actionpack (>= 5.2)\n      railties (>= 5.2)\n    rexml (3.2.5)\n    rspec-core (3.12.1)\n      rspec-support (~> 3.12.0)\n    rspec-expectations (3.12.2)\n      diff-lcs (>= 1.2.0, < 2.0)\n      rspec-support (~> 3.12.0)\n    rspec-mocks (3.12.3)\n      diff-lcs (>= 1.2.0, < 2.0)\n      rspec-support (~> 3.12.0)\n    rspec-rails (6.0.1)\n      actionpack (>= 6.1)\n      activesupport (>= 6.1)\n      railties (>= 6.1)\n      rspec-core (~> 3.11)\n      rspec-expectations (~> 3.11)\n      rspec-mocks (~> 3.11)\n      rspec-support (~> 3.11)\n    rspec-support (3.12.0)\n    rubocop (1.48.0)\n      json (~> 2.3)\n      parallel (~> 1.10)\n      parser (>= 3.2.0.0)\n      rainbow (>= 2.2.2, < 4.0)\n      regexp_parser (>= 1.8, < 3.0)\n      rexml (>= 3.2.5, < 4.0)\n      rubocop-ast (>= 1.26.0, < 2.0)\n      ruby-progressbar (~> 1.7)\n      unicode-display_width (>= 2.4.0, < 3.0)\n    rubocop-ast (1.27.0)\n      parser (>= 3.2.1.0)\n    rubocop-capybara (2.17.1)\n      rubocop (~> 1.41)\n    rubocop-rails (2.18.0)\n      activesupport (>= 4.2.0)\n      rack (>= 1.1)\n      rubocop (>= 1.33.0, < 2.0)\n    rubocop-rspec (2.19.0)\n      rubocop (~> 1.33)\n      rubocop-capybara (~> 2.17)\n    ruby-progressbar (1.13.0)\n    rubyzip (2.3.2)\n    selenium-webdriver (4.8.1)\n      rexml (~> 3.2, >= 3.2.5)\n      rubyzip (>= 1.2.2, < 3.0)\n      websocket (~> 1.0)\n    shoulda-matchers (5.3.0)\n      activesupport (>= 5.2.0)\n    sprockets (4.2.0)\n      concurrent-ruby (~> 1.0)\n      rack (>= 2.2.4, < 4)\n    sprockets-rails (3.4.2)\n      actionpack (>= 5.2)\n      activesupport (>= 5.2)\n      sprockets (>= 3.0.0)\n    stimulus-rails (1.2.1)\n      railties (>= 6.0.0)\n    thor (1.2.1)\n    timeout (0.3.2)\n    turbo-rails (1.4.0)\n      actionpack (>= 6.0.0)\n      activejob (>= 6.0.0)\n      railties (>= 6.0.0)\n    tzinfo (2.0.6)\n      concurrent-ruby (~> 1.0)\n    unicode-display_width (2.4.2)\n    uniform_notifier (1.16.0)\n    warden (1.2.9)\n      rack (>= 2.0.9)\n    web-console (4.2.0)\n      actionview (>= 6.0.0)\n      activemodel (>= 6.0.0)\n      bindex (>= 0.4.0)\n      railties (>= 6.0.0)\n    webdrivers (5.2.0)\n      nokogiri (~> 1.6)\n      rubyzip (>= 1.3.0)\n      selenium-webdriver (~> 4.0)\n    websocket (1.2.9)\n    websocket-driver (0.7.5)\n      websocket-extensions (>= 0.1.0)\n    websocket-extensions (0.1.5)\n    xpath (3.2.0)\n      nokogiri (~> 1.8)\n    zeitwerk (2.6.7)\n\nPLATFORMS\n  x86_64-linux\n\nDEPENDENCIES\n  bootsnap\n  bullet\n  capybara\n  database_cleaner-active_record\n  debug\n  devise\n  factory_bot_rails\n  faker\n  importmap-rails\n  jbuilder\n  json_matchers\n  money-rails\n  pg (~> 1.1)\n  pry\n  puma (~> 5.0)\n  rails (~> 7.0.4, >= 7.0.4.2)\n  redis (~> 4.0)\n  rspec-rails\n  rubocop\n  rubocop-rails\n  rubocop-rspec\n  selenium-webdriver\n  shoulda-matchers (~> 5.0)\n  sprockets-rails\n  stimulus-rails\n  turbo-rails\n  tzinfo-data\n  web-console\n  webdrivers\n\nRUBY VERSION\n   ruby 3.2.0p0\n\nBUNDLED WITH\n   2.4.1\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Gemfile.lock b/Gemfile.lock
+--- a/Gemfile.lock	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/Gemfile.lock	(date 1678870141276)
+@@ -69,10 +69,16 @@
+     addressable (2.8.1)
+       public_suffix (>= 2.0.2, < 6.0)
+     ast (2.4.2)
++    autoprefixer-rails (10.4.13.0)
++      execjs (~> 2)
+     bcrypt (3.1.18)
+     bindex (0.8.1)
+     bootsnap (1.16.0)
+       msgpack (~> 1.2)
++    bootstrap (5.2.3)
++      autoprefixer-rails (>= 9.1.0)
++      popper_js (>= 2.11.6, < 3)
++      sassc-rails (>= 2.0.0)
+     builder (3.2.4)
+     bullet (7.0.7)
+       activesupport (>= 3.0.0)
+@@ -105,6 +111,7 @@
+       warden (~> 1.2.3)
+     diff-lcs (1.5.0)
+     erubi (1.12.0)
++    execjs (2.8.1)
+     factory_bot (6.2.1)
+       activesupport (>= 5.0.0)
+     factory_bot_rails (6.2.0)
+@@ -112,6 +119,7 @@
+       railties (>= 5.0.0)
+     faker (3.1.1)
+       i18n (>= 1.8.11, < 2)
++    ffi (1.15.5)
+     globalid (1.1.0)
+       activesupport (>= 5.0)
+     i18n (1.12.0)
+@@ -169,6 +177,7 @@
+     parser (3.2.1.1)
+       ast (~> 2.4.1)
+     pg (1.4.6)
++    popper_js (2.11.6)
+     pry (0.14.2)
+       coderay (~> 1.1)
+       method_source (~> 1.0)
+@@ -255,12 +264,30 @@
+       rubocop-capybara (~> 2.17)
+     ruby-progressbar (1.13.0)
+     rubyzip (2.3.2)
++    sassc (2.4.0)
++      ffi (~> 1.9)
++    sassc-rails (2.1.2)
++      railties (>= 4.0.0)
++      sassc (>= 2.0)
++      sprockets (> 3.0)
++      sprockets-rails
++      tilt
+     selenium-webdriver (4.8.1)
+       rexml (~> 3.2, >= 3.2.5)
+       rubyzip (>= 1.2.2, < 3.0)
+       websocket (~> 1.0)
+     shoulda-matchers (5.3.0)
+       activesupport (>= 5.2.0)
++    simple_form (5.2.0)
++      actionpack (>= 5.2)
++      activemodel (>= 5.2)
++    slim (5.1.0)
++      temple (~> 0.10.0)
++      tilt (>= 2.0.6, < 2.2)
++    slim-rails (3.6.2)
++      actionpack (>= 3.1)
++      railties (>= 3.1)
++      slim (>= 3.0, < 6.0, != 5.0.0)
+     sprockets (4.2.0)
+       concurrent-ruby (~> 1.0)
+       rack (>= 2.2.4, < 4)
+@@ -270,7 +297,9 @@
+       sprockets (>= 3.0.0)
+     stimulus-rails (1.2.1)
+       railties (>= 6.0.0)
++    temple (0.10.0)
+     thor (1.2.1)
++    tilt (2.1.0)
+     timeout (0.3.2)
+     turbo-rails (1.4.0)
+       actionpack (>= 6.0.0)
+@@ -304,6 +333,7 @@
+ 
+ DEPENDENCIES
+   bootsnap
++  bootstrap (~> 5.2.2)
+   bullet
+   capybara
+   database_cleaner-active_record
+@@ -326,6 +356,8 @@
+   rubocop-rspec
+   selenium-webdriver
+   shoulda-matchers (~> 5.0)
++  simple_form
++  slim-rails
+   sprockets-rails
+   stimulus-rails
+   turbo-rails
+Index: db/schema.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># This file is auto-generated from the current state of the database. Instead\n# of editing this file, please use the migrations feature of Active Record to\n# incrementally modify your database, and then regenerate this schema definition.\n#\n# This file is the source Rails uses to define your schema when running `bin/rails\n# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to\n# be faster and is potentially less error prone than running all of your\n# migrations from scratch. Old migrations may fail to apply correctly if those\n# migrations use external dependencies or application code.\n#\n# It's strongly recommended that you check this file into your version control system.\n\nActiveRecord::Schema[7.0].define(version: 2023_03_12_151543) do\n  # These are extensions that must be enabled in order to support this database\n  enable_extension \"plpgsql\"\n\n  create_table \"merchants\", force: :cascade do |t|\n    t.string \"email\", default: \"\", null: false\n    t.string \"encrypted_password\", default: \"\", null: false\n    t.string \"reset_password_token\"\n    t.datetime \"reset_password_sent_at\"\n    t.datetime \"remember_created_at\"\n    t.datetime \"created_at\", null: false\n    t.datetime \"updated_at\", null: false\n    t.string \"name\", default: \"\", null: false\n    t.text \"description\"\n    t.integer \"status\", default: 0, null: false\n    t.decimal \"total_transaction_sum\", precision: 8, scale: 2, default: \"0.0\"\n    t.index [\"email\"], name: \"index_merchants_on_email\", unique: true\n    t.index [\"reset_password_token\"], name: \"index_merchants_on_reset_password_token\", unique: true\n  end\n\n  create_table \"users\", force: :cascade do |t|\n    t.string \"email\", default: \"\", null: false\n    t.string \"encrypted_password\", default: \"\", null: false\n    t.string \"reset_password_token\"\n    t.datetime \"reset_password_sent_at\"\n    t.datetime \"remember_created_at\"\n    t.datetime \"created_at\", null: false\n    t.datetime \"updated_at\", null: false\n    t.index [\"email\"], name: \"index_users_on_email\", unique: true\n    t.index [\"reset_password_token\"], name: \"index_users_on_reset_password_token\", unique: true\n  end\n\nend\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/db/schema.rb b/db/schema.rb
+--- a/db/schema.rb	(revision f34b92a80c30d05bb370a7b1790fdbea4f0fc522)
++++ b/db/schema.rb	(date 1678862783801)
+@@ -10,7 +10,7 @@
+ #
+ # It's strongly recommended that you check this file into your version control system.
+ 
+-ActiveRecord::Schema[7.0].define(version: 2023_03_12_151543) do
++ActiveRecord::Schema[7.0].define(version: 2023_03_12_154530) do
+   # These are extensions that must be enabled in order to support this database
+   enable_extension "plpgsql"
+ 
+@@ -30,6 +30,20 @@
+     t.index ["reset_password_token"], name: "index_merchants_on_reset_password_token", unique: true
+   end
+ 
++  create_table "transactions", force: :cascade do |t|
++    t.string "uuid", null: false
++    t.integer "amount_cents", default: 0, null: false
++    t.string "amount_currency", default: "USD", null: false
++    t.bigint "merchant_id"
++    t.integer "status", default: 0, null: false
++    t.string "customer_email", default: "", null: false
++    t.string "customer_phone", default: "", null: false
++    t.text "details"
++    t.datetime "created_at", null: false
++    t.datetime "updated_at", null: false
++    t.index ["merchant_id"], name: "index_transactions_on_merchant_id"
++  end
++
+   create_table "users", force: :cascade do |t|
+     t.string "email", default: "", null: false
+     t.string "encrypted_password", default: "", null: false
+Index: db/migrate/20230312154530_create_transactions.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/db/migrate/20230312154530_create_transactions.rb b/db/migrate/20230312154530_create_transactions.rb
+new file mode 100644
+--- /dev/null	(date 1678862763678)
++++ b/db/migrate/20230312154530_create_transactions.rb	(date 1678862763678)
+@@ -0,0 +1,15 @@
++class CreateTransactions < ActiveRecord::Migration[7.0]
++  def change
++    create_table :transactions do |t|
++      t.string :uuid, null: false
++      t.monetize :amount
++      t.references :merchant
++      t.integer :status, null: false, default: 0
++      t.string :customer_email, null: false, default: ''
++      t.string :customer_phone, null: false, default: ''
++      t.text :details
++
++      t.timestamps
++    end
++  end
++end

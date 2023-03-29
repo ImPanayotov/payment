@@ -1,6 +1,14 @@
-# frozen_string_literal: true
+module ContextHelpers
+  private
+
+  def is_admin?
+    user.admin_role?
+  end
+end
 
 class ApplicationPolicy
+  include ContextHelpers
+
   attr_reader :user, :record
 
   def initialize(user, record)

@@ -44,6 +44,7 @@ end
 group :test do
   gem 'capybara'
   gem 'json_matchers'
+  gem 'pundit-matchers'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
