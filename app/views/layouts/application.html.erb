@@ -11,6 +11,17 @@
   </head>
 
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="notice"><%= alert %></p>
+
+    <% if admin_user_signed_in? %>
+      <%= link_to('Edit registration', edit_admin_user_registration_path) %>
+      <%= link_to('Logout', destroy_admin_user_session_path, data: { turbo_method: :delete }) %>
+    <% else %>
+      <%= link_to('Register', new_admin_user_registration_path) %>
+      <%= link_to('Login', new_admin_user_session_path) %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

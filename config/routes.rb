@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
-  root 'welcome#index'
+  root 'admin/welcome#index'
 
-  resources :merchants
-  resources :customers
-  resources :transactions, only: [:index]
+  namespace :admin do
+    devise_for :users
+    resources :welcome, only: [:index]
+    resources :merchants
+    resources :customers
+    resources :transactions, only: [:index]
+  end
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do

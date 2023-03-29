@@ -4,9 +4,9 @@ tr
   td = merchant.email
   td = humanized_money_with_symbol merchant.total_transaction_sum
   td class=('d-flex')
-    p.p-2= link_to 'Show', merchant_path(merchant)
-    p.p-2= link_to 'Edit', edit_merchant_path(merchant)
+    p.p-2= link_to 'Show', admin_merchant_path(merchant)
+    p.p-2= link_to 'Edit', edit_admin_merchant_path(merchant)
     p.p-2= link_to 'Destroy',
-               merchant_path(merchant),
+               admin_merchant_path(merchant),
                data: { turbo_method: :delete,
                        turbo_confirm: 'Are you sure?' }
