@@ -32,7 +32,7 @@ shared_examples 'customer merchant' do |scope|
     end
 
     it "redirects to updated template" do
-      expect(response).to redirect_to(send("#{scope}_path"))
+      expect(response).to redirect_to(send("admin_#{scope}_path"))
     end
   end
 
@@ -47,7 +47,7 @@ shared_examples 'customer merchant' do |scope|
       end
 
       it "redirects to created template" do
-        expect(response).to redirect_to(send("#{scope}_path", account_type))
+        expect(response).to redirect_to(send("admin_#{scope}_path", account_type))
       end
     end
   end
@@ -62,7 +62,7 @@ shared_examples 'customer merchant' do |scope|
     end
 
     it "redirects to index template" do
-      expect(response).to redirect_to(send("#{scope.to_s.pluralize}_path"))
+      expect(response).to redirect_to(send("admin_#{scope.to_s.pluralize}_path"))
     end
   end
 end

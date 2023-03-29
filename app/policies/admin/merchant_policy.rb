@@ -1,5 +1,5 @@
 class Admin
-  class CustomerPolicy < ApplicationPolicy
+  class MerchantPolicy < ApplicationPolicy
     def index?
       is_admin?
     end
