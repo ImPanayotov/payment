@@ -4,12 +4,12 @@ h2.text-center= "Currently having: #{merchants_count} merchant(s) and #{customer
 
 .div.text-center.pb-2
   .button.btn.btn-primary
-    = link_to 'View all Merchants', merchants_path, class: 'btn'
+    = link_to 'View all Merchants', admin_merchants_path, class: 'btn'
 
 .div.text-center.pb-2
   .button.btn.btn-primary
-    = link_to 'View all Customers', customers_path, class: 'btn'
+    = link_to 'View all Customers', admin_customers_path, class: 'btn'
 
 .div.text-center.pb-2
   .button.btn.btn-primary
-    = link_to 'View all Transactions', transactions_path, class: 'btn'
+    = link_to 'View all Transactions', admin_transactions_path, class: 'btn'
