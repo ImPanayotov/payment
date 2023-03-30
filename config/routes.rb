@@ -1,8 +1,11 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root 'admin/welcome#index'
 
   namespace :admin do
     devise_for :users
+    mount Sidekiq::Web => '/sidekiq'
     resources :welcome, only: [:index]
     resources :merchants
     resources :customers

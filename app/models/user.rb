@@ -36,7 +36,11 @@ class User < ApplicationRecord
 
   scope :admins, -> { with_role(:admin) }
   scope :users, -> { with_role(:user) }
+  scope :active, -> { where(status: 'active') }
 
+  def self.active_admins_created_after(date)
+    admins.active.where("users.created_at > ?", date)
+  end
 
   ROLES.each do |role|
     define_method "#{role}_role?" do
