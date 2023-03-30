@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  # include Devise::JWT::RevocationStrategies::JTIMatcher
-
   ROLES = %w[admin user].freeze
 
   devise :database_authenticatable,
