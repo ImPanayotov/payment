@@ -4,6 +4,10 @@ module ContextHelpers
   def is_admin?
     user.admin_role?
   end
+
+  def correct_user?
+    user.id == record.merchant_id
+  end
 end
 
 class ApplicationPolicy

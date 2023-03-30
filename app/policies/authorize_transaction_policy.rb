@@ -1,5 +1,5 @@
 class AuthorizeTransactionPolicy < ApplicationPolicy
   def authorize_transaction?
-    user.id == record.merchant_id
+    correct_user? && user.active?
   end
 end

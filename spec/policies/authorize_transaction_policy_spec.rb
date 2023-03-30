@@ -16,6 +16,17 @@ describe AuthorizeTransactionPolicy, type: :policy do
   end
 
   describe '.authorize_transaction?' do
-    it { is_expected.to permit_action(:authorize_transaction) }
+    context 'with active merchant' do
+      it { is_expected.to permit_action(:authorize_transaction) }
+    end
+
+    context 'with inactive merchant' do
+      let(:merchant) do
+        create(:merchant,
+               status: 'inactive')
+      end
+
+      it { is_expected.to forbid_action(:authorize_transaction) }
+    end
   end
 end
