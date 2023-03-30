@@ -1,0 +1,4 @@
+txn_hourly_removal:
+  cron: "0 * * * *"
+  class: "TxnHourlyRemovalWorker"
+  queue: "cron"
