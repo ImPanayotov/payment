@@ -1,8 +1,6 @@
 module Api
   module V1
     class TransactionsController < ApplicationController
-      # include MerchantsBasicAuthConcern
-
       def authorize_transaction
         transaction = AuthorizeTransaction.create!(transaction_params) do |t|
           t.generate_uuid
