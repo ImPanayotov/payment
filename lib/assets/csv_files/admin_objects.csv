@@ -1,0 +1,11 @@
+email,first_name,last_name,role,status,password
+adminA@rake.com,Admin A FN,Admin A LN,admin,active,Password123!
+adminB@rake.com,Admin B FN,Admin B LN,admin,active,Password123!
+adminC@rake.com,Admin C FN,Admin C LN,admin,active,Password123!
+adminD@rake.com,Admin D FN,Admin D LN,admin,active,Password123!
+adminE@rake.com,Admin E FN,Admin E LN,admin,active,Password123!
+adminF@rake.com,Admin F FN,Admin F LN,admin,active,Password123!
+adminG@rake.com,Admin G FN,Admin G LN,admin,active,Password123!
+adminH@rake.com,Admin H FN,Admin H LN,admin,active,Password123!
+adminI@rake.com,Admin I FN,Admin I LN,admin,active,Password123!
+adminJ@rake.com,Admin J FN,Admin J LN,admin,active,Password123!
