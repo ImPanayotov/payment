@@ -1,8 +1,7 @@
 class Transaction < ApplicationRecord
   before_create :generate_uuid
 
-  belongs_to :merchant
-  belongs_to :customer
+  belongs_to :transactionable, polymorphic: true
 
   has_many :follow_transactions,
            class_name: 'Transaction',

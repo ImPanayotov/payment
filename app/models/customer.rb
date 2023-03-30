@@ -5,7 +5,7 @@ class Customer < ApplicationRecord
          :rememberable,
          :validatable
 
-  has_many :transactions, dependent: :restrict_with_error
+  has_many :transactions, as: :transactionable
   has_many :follow_transactions, through: :transactions
 
   monetize :amount_cents
