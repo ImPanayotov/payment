@@ -2,12 +2,17 @@ class MerchantsController < ApplicationController
   def index
     merchants = Merchant.all
 
+    authorize(merchants)
+
     render 'merchants/index',
            locals: { merchants: }
   end
 
   def show
     merchant = find_merchant
+
+    authorize(merchant)
+
     transactions = merchant.transactions
                            .includes(:customer)
                            .order(id: :desc)
@@ -20,6 +25,8 @@ class MerchantsController < ApplicationController
   def new
     merchant = Merchant.new
 
+    authorize(merchant)
+
     render 'merchants/new',
            locals: { merchant: }
   end
@@ -27,12 +34,16 @@ class MerchantsController < ApplicationController
   def edit
     merchant = find_merchant
 
+    authorize(merchant)
+
     render 'merchants/edit',
            locals: { merchant: }
   end
 
   def create
     merchant = Merchant.new(merchant_params)
+
+    authorize(merchant)
 
     if merchant.save
       redirect_to merchant_path(merchant),
@@ -46,6 +57,8 @@ class MerchantsController < ApplicationController
   def update
     merchant = find_merchant
 
+    authorize(merchant)
+
     if merchant.update(merchant_params)
       redirect_to merchant_path(merchant),
                   notice: 'Merchant successfully updated!'
@@ -57,6 +70,8 @@ class MerchantsController < ApplicationController
 
   def destroy
     merchant = find_merchant
+
+    authorize(merchant)
 
     merchant.destroy
     redirect_to merchants_path,
