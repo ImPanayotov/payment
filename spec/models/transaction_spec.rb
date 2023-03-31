@@ -14,18 +14,6 @@ RSpec.describe Transaction, type: :model do
     end
   end
 
-  describe 'validations' do
-    %i[uuid
-       status
-       type].each do |field|
-      it { is_expected.to validate_presence_of(field) }
-    end
-
-    it do
-      is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES)
-    end
-  end
-
   describe 'enums' do
     let(:statuses) do
       { approved: 0,

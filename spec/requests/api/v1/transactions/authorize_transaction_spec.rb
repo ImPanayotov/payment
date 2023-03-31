@@ -8,9 +8,10 @@ describe 'POST /api/v1/transactions/authorize_transaction' do
   end
 
   let(:params) do
-    { transaction: { amount_cents: 200000,
+    { transaction: { amount_cents: 2000_00,
                      customer_id: customer.id,
-                     details: 'No details' } }
+                     details: 'No details',
+                     type: 'AuthorizeTransaction' } }
   end
 
   before do
