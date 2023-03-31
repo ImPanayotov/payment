@@ -13,14 +13,23 @@ module Api
 
         def call
           ActiveRecord::Base.transaction do
-            ReversalTransaction.create!(transaction_params) do |t|
-            t.follow_transaction_id = transaction.id
-              t.generate_uuid
-              t.amount_cents = 0
-            end
+            update_transaction_params
 
-            transaction.reversed_status!
+            form =
+              Api::V1::Transactions::CreateForm.new(transaction_params)
+
+            form.save
+
+            transaction.reversed_status! if form.success
           end
+        end
+
+        private
+
+        def update_transaction_params
+          transaction_params[:amount_cents] = 0
+          transaction_params[:type] = 'ReversalTransaction'
+          transaction_params[:follow_transaction_id] = transaction.id
         end
       end
     end

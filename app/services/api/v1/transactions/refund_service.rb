@@ -33,7 +33,7 @@ module Api
 
           ActiveRecord::Base.transaction do
             transaction.update!(
-              follow_transaction_id: charge_transaction.id,
+              follow_transaction_id: charge_transaction.id
             )
 
             update_customer_amount(charge_transaction, customer, '+')

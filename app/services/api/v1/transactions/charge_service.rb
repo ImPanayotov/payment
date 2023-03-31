@@ -20,14 +20,23 @@ module Api
 
         def call
           ActiveRecord::Base.transaction do
-            ChargeTransaction.create!(transaction_params) do |t|
-              t.follow_transaction_id = transaction.id
-              t.generate_uuid
-            end
+            update_transaction_params
+
+            form =
+              Api::V1::Transactions::CreateForm.new(transaction_params)
+
+            form.save
 
             update_customer_amount(transaction, customer, '-')
             update_merchant_total_txn_sum(transaction, current_merchant, '+')
           end
+        end
+
+        private
+
+        def update_transaction_params
+          transaction_params[:type] = 'ChargeTransaction'
+          transaction_params[:follow_transaction_id] = transaction.id
         end
       end
     end
