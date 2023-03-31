@@ -13,19 +13,6 @@ class Transaction < ApplicationRecord
                  refunded: 2,
                  error: 3 },
        _suffix: true
-  #
-  # TYPES = %w[AuthorizeTransaction
-  #            ChargeTransaction
-  #            ReversalTransaction
-  #            RefundTransaction].freeze
-  #
+
   monetize :amount_cents
-  #
-  # validates :uuid, :status, presence: true
-  # validates :type, inclusion: { in: TYPES }
-  #
-  # def generate_uuid
-  #   binding.pry
-  #   self.uuid = SecureRandom.uuid
-  # end
 end

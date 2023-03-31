@@ -24,10 +24,6 @@ module Api
         validates :uuid, :status, :type, presence: true
         validates :type, inclusion: { in: TYPES }
 
-        def generate_uuid
-          @uuid = SecureRandom.uuid
-        end
-
         def initialize(attributes = {})
           super
           @uuid = generate_uuid
@@ -57,6 +53,12 @@ module Api
             errors.add(:base, e.message)
             @success = false
           end
+        end
+
+        private
+
+        def generate_uuid
+          @uuid = SecureRandom.uuid
         end
       end
     end

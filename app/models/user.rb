@@ -1,17 +1,7 @@
 class User < ApplicationRecord
-  # include Devise::JWT::RevocationStrategies::JTIMatcher
-
   ROLES = %w[admin user].freeze
 
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable,
-         :validatable,
-         :jwt_authenticatable,
-         :recoverable,
-         :rememberable,
-         jwt_revocation_strategy: self
+  include DeviseConcern
 
   enum status: { active: 0, inactive: 1 }
 
