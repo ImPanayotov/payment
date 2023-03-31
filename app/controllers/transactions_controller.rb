@@ -3,6 +3,6 @@ class TransactionsController < ApplicationController
     transactions = Transaction.order(id: :desc)
 
     render 'transactions/index',
-           locals: { transactions: transactions }
+           locals: { transactions: }
   end
 end

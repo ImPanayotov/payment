@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'validations' do
     %i[first_name
        last_name
@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
     end
 
     it do
-      is_expected.to validate_inclusion_of(:role).in_array(described_class::ROLES)
+      expect(subject).to validate_inclusion_of(:role).in_array(described_class::ROLES)
     end
 
     it { is_expected.to allow_value('admin_user@email.com').for(:email) }
@@ -24,26 +24,26 @@ RSpec.describe User, type: :model do
   describe 'columns' do
     %i[first_name last_name].each do |column|
       it do
-        is_expected.to have_db_column(column)
+        expect(subject).to have_db_column(column)
           .of_type(:string)
           .with_options(null: false, limit: 255, default: '')
       end
     end
 
     it do
-      is_expected.to have_db_column(:email)
+      expect(subject).to have_db_column(:email)
         .of_type(:string)
         .with_options(null: false, default: '')
     end
 
     it do
-      is_expected.to have_db_column(:status)
+      expect(subject).to have_db_column(:status)
         .of_type(:integer)
         .with_options(null: false, default: 'active')
     end
 
     it do
-      is_expected.to have_db_column(:role)
+      expect(subject).to have_db_column(:role)
         .of_type(:string)
         .with_options(null: false, default: 'user')
     end
@@ -102,7 +102,7 @@ RSpec.describe User, type: :model do
     end
 
     described_class::ROLES.each do |role|
-      context ".with_role(#{role})" do
+      describe ".with_role(#{role})" do
         let(:result) do
           described_class.with_role(role)
         end

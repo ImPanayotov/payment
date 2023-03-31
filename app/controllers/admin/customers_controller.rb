@@ -21,35 +21,21 @@ class Admin
                        transactions: }
     end
 
-    def edit
-      customer = find_customer
-
-      authorize(customer)
-
-      render 'customers/edit',
-             locals: { customer: }
-    end
-
-    def update
-      customer = find_customer
-
-      authorize(customer)
-
-      if customer.update(customer_params)
-        redirect_to admin_customer_path(customer),
-                    notice: 'Customer successfully updated!'
-      else
-        render 'customers/edit',
-               locals: { customer: }
-      end
-    end
-
     def new
       customer = Customer.new
 
       authorize(customer)
 
       render 'customers/new',
+             locals: { customer: }
+    end
+
+    def edit
+      customer = find_customer
+
+      authorize(customer)
+
+      render 'customers/edit',
              locals: { customer: }
     end
 
@@ -63,6 +49,20 @@ class Admin
                     notice: 'Customer successfully created!'
       else
         render 'customers/new',
+               locals: { customer: }
+      end
+    end
+
+    def update
+      customer = find_customer
+
+      authorize(customer)
+
+      if customer.update(customer_params)
+        redirect_to admin_customer_path(customer),
+                    notice: 'Customer successfully updated!'
+      else
+        render 'customers/edit',
                locals: { customer: }
       end
     end
@@ -101,10 +101,10 @@ class Admin
 
     def update_customer_attrs
       %i[first_name
-       last_name
-       phone
-       email
-       total_transaction_sum]
+         last_name
+         phone
+         email
+         total_transaction_sum]
     end
 
     def create_customer_attrs

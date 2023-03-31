@@ -18,5 +18,4 @@ class Merchant < ApplicationRecord
 
   validates :name, { presence: true, length: { maximum: 255 } }
   validates :email, presence: true, email: true
-
 end

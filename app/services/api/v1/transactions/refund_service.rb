@@ -48,6 +48,7 @@ module Api
                ::Transactions::RefundedTransactions::AlreadyRefundedError,
                StandardError => e
           transaction.error_status!
+          errors!
           errors.add(:base, e.message)
         end
 
@@ -55,9 +56,9 @@ module Api
 
         def find_charge_txn
           ChargeTransaction.find_by(amount_cents:,
-                                     customer_id: customer.id,
-                                     merchant_id: current_merchant.id,
-                                     uuid:)
+                                    customer_id: customer.id,
+                                    merchant_id: current_merchant.id,
+                                    uuid:)
         end
 
         def transaction_type

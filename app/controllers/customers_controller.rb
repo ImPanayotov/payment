@@ -5,7 +5,7 @@ class CustomersController < ApplicationController
     authorize(customers)
 
     render 'customers/index',
-           locals: { customers: customers }
+           locals: { customers: }
   end
 
   def show
@@ -16,31 +16,8 @@ class CustomersController < ApplicationController
     transactions = customer.transactions.includes(:merchant).order(id: :desc)
 
     render 'customers/show',
-           locals: { customer: customer,
-                     transactions: transactions }
-  end
-
-  def edit
-    customer = find_customer
-
-    authorize(customer)
-
-    render 'customers/edit',
-           locals: { customer: customer }
-  end
-
-  def update
-    customer = find_customer
-
-    authorize(customer)
-
-    if customer.update(customer_params)
-      redirect_to customer_path(customer),
-                  notice: 'Customer successfully updated!'
-    else
-      render 'customers/edit',
-             locals: { customer: customer }
-    end
+           locals: { customer:,
+                     transactions: }
   end
 
   def new
@@ -49,7 +26,16 @@ class CustomersController < ApplicationController
     authorize(customer)
 
     render 'customers/new',
-           locals: { customer: customer }
+           locals: { customer: }
+  end
+
+  def edit
+    customer = find_customer
+
+    authorize(customer)
+
+    render 'customers/edit',
+           locals: { customer: }
   end
 
   def create
@@ -62,7 +48,21 @@ class CustomersController < ApplicationController
                   notice: 'Customer successfully created!'
     else
       render 'customers/new',
-             locals: { customer: customer }
+             locals: { customer: }
+    end
+  end
+
+  def update
+    customer = find_customer
+
+    authorize(customer)
+
+    if customer.update(customer_params)
+      redirect_to customer_path(customer),
+                  notice: 'Customer successfully updated!'
+    else
+      render 'customers/edit',
+             locals: { customer: }
     end
   end
 

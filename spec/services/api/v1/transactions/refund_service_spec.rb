@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Transactions::RefundService, type: :service do
   subject(:service) do
-    described_class.new(transaction_params: transaction_params,
-                        transaction: transaction,
+    described_class.new(transaction_params:,
+                        transaction:,
                         current_merchant: merchant)
   end
 
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::Transactions::RefundService, type: :service do
   let(:transaction) do
     create(:transaction,
            :refunded,
-           follow_transaction_id: charge_transaction.id )
+           follow_transaction_id: charge_transaction.id)
   end
 
   let(:authorize_transaction) do
@@ -30,8 +30,8 @@ RSpec.describe Api::V1::Transactions::RefundService, type: :service do
   let(:charge_transaction) do
     create(:transaction,
            :charged,
-           merchant: merchant,
-           customer: customer,
+           merchant:,
+           customer:,
            follow_transaction_id: authorize_transaction.id)
   end
 
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::Transactions::RefundService, type: :service do
       context 'when invalid customer' do
         let(:transaction_params) do
           { merchant_id: merchant.id,
-            amount_cents: 1000_00,
+            amount_cents: 100_000,
             customer_id: 'invalid',
             details: 'No details' }
         end
@@ -83,11 +83,11 @@ RSpec.describe Api::V1::Transactions::RefundService, type: :service do
 
       context 'when invalid transaction' do
         let(:transaction_params) do
-           { merchant_id: merchant.id,
-             amount_cents: 1000_00,
-             customer_id: customer.id,
-             details: 'No details',
-             uuid: 'invalid'}
+          { merchant_id: merchant.id,
+            amount_cents: 100_000,
+            customer_id: customer.id,
+            details: 'No details',
+            uuid: 'invalid' }
         end
 
         it do
@@ -102,8 +102,8 @@ RSpec.describe Api::V1::Transactions::RefundService, type: :service do
             create(:transaction,
                    :charged,
                    status: 'refunded',
-                   merchant: merchant,
-                   customer: customer,
+                   merchant:,
+                   customer:,
                    follow_transaction_id: authorize_transaction.id)
           end
 

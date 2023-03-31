@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Customer, type: :model do
+RSpec.describe Customer do
   describe 'associations' do
     it { is_expected.to have_many(:transactions).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:follow_transactions).through(:transactions) }
@@ -30,32 +30,32 @@ RSpec.describe Customer, type: :model do
   describe 'columns' do
     %i[first_name last_name].each do |column|
       it do
-        is_expected.to have_db_column(column)
+        expect(subject).to have_db_column(column)
           .of_type(:string)
           .with_options(null: false, limit: 255, default: '')
       end
     end
 
     it do
-      is_expected.to have_db_column(:phone)
+      expect(subject).to have_db_column(:phone)
         .of_type(:string)
         .with_options(null: false, limit: 15, default: '')
     end
 
     it do
-      is_expected.to have_db_column(:email)
+      expect(subject).to have_db_column(:email)
         .of_type(:string)
         .with_options(null: false, default: '')
     end
 
     it do
-      is_expected.to have_db_column(:amount_cents)
+      expect(subject).to have_db_column(:amount_cents)
         .of_type(:integer)
         .with_options(null: false, default: 0)
     end
 
     it do
-      is_expected.to have_db_column(:amount_currency)
+      expect(subject).to have_db_column(:amount_currency)
         .of_type(:string)
         .with_options(null: false, default: 'USD')
     end

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Transactions::AuthorizeService, type: :service do
   subject(:service) do
-    described_class.new(transaction_params: transaction_params,
-                        transaction: transaction,
+    described_class.new(transaction_params:,
+                        transaction:,
                         current_merchant: merchant)
   end
 
@@ -22,7 +22,7 @@ RSpec.describe Api::V1::Transactions::AuthorizeService, type: :service do
 
   let(:transaction_params) do
     { merchant_id: merchant.id,
-      amount_cents: 1000_00,
+      amount_cents: 100_000,
       customer_id: customer.id,
       details: 'No details' }
   end
@@ -63,7 +63,7 @@ RSpec.describe Api::V1::Transactions::AuthorizeService, type: :service do
       context 'when not existing customer' do
         let(:transaction_params) do
           { merchant_id: merchant.id,
-            amount_cents: 1000_00,
+            amount_cents: 100_000,
             customer_id: 'invalid',
             details: 'No details' }
         end

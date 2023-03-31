@@ -39,7 +39,7 @@ class User < ApplicationRecord
   scope :active, -> { where(status: 'active') }
 
   def self.active_admins_created_after(date)
-    admins.active.where("users.created_at > ?", date)
+    admins.active.where('users.created_at > ?', date)
   end
 
   ROLES.each do |role|

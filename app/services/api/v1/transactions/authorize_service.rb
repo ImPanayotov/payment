@@ -33,9 +33,10 @@ module Api
 
           success!
         rescue ::Transactions::AuthorizedTransactions::NotExistingCustomerError,
-               StandardError => error
+               StandardError => e
           transaction.error_status!
-          errors.add(:base, error.message)
+          errors!
+          errors.add(:base, e.message)
         end
 
         private

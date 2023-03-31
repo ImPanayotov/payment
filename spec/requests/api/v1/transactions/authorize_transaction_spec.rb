@@ -8,7 +8,7 @@ describe 'POST /api/v1/transactions/authorize_transaction' do
   end
 
   let(:params) do
-    { transaction: { amount_cents: 2000_00,
+    { transaction: { amount_cents: 200_000,
                      customer_id: customer.id,
                      details: 'No details',
                      type: 'AuthorizeTransaction' } }
@@ -21,13 +21,13 @@ describe 'POST /api/v1/transactions/authorize_transaction' do
   context 'when customer has got enough amount' do
     it 'creates authorize and charge transactions' do
       expect do
-        post "/api/v1/transactions/authorize_transaction", params:
+        post '/api/v1/transactions/authorize_transaction', params:
       end.to change(AuthorizeTransaction, :count).by(1)
          .and change(ChargeTransaction, :count).by(1)
 
       expect(AuthorizeTransaction.last.status).to eq('approved')
       expect(ChargeTransaction.last.status).to eq('approved')
-      expect(response.status).to eq(201)
+      expect(response).to have_http_status(:created)
     end
   end
 
@@ -38,13 +38,13 @@ describe 'POST /api/v1/transactions/authorize_transaction' do
 
     it 'creates authorize and reversal transaction' do
       expect do
-        post "/api/v1/transactions/authorize_transaction", params:
+        post '/api/v1/transactions/authorize_transaction', params:
       end.to change(AuthorizeTransaction, :count).by(1)
          .and change(ReversalTransaction, :count).by(1)
 
       expect(AuthorizeTransaction.last.status).to eq('reversed')
       expect(ReversalTransaction.last.status).to eq('approved')
-      expect(response.status).to eq(201)
+      expect(response).to have_http_status(:created)
     end
   end
 end

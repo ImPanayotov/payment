@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Merchant, type: :model do
+RSpec.describe Merchant do
   describe 'associations' do
     it { is_expected.to have_many(:transactions).dependent(:restrict_with_exception) }
     it { is_expected.to have_many(:follow_transactions).through(:transactions) }
@@ -18,7 +18,7 @@ RSpec.describe Merchant, type: :model do
 
   describe 'enums' do
     it do
-      is_expected.to define_enum_for(:status)
+      expect(subject).to define_enum_for(:status)
         .with_values({ active: 0, inactive: 1 })
     end
   end
@@ -29,35 +29,35 @@ RSpec.describe Merchant, type: :model do
 
   describe 'columns' do
     it do
-      is_expected.to have_db_column(:name)
+      expect(subject).to have_db_column(:name)
         .of_type(:string)
         .with_options(null: false, limit: 255, default: '')
     end
 
     it do
-      is_expected.to have_db_column(:description)
+      expect(subject).to have_db_column(:description)
         .of_type(:text)
     end
 
     it do
-      is_expected.to have_db_column(:jti)
+      expect(subject).to have_db_column(:jti)
         .of_type(:string)
     end
 
     it do
-      is_expected.to have_db_column(:email)
+      expect(subject).to have_db_column(:email)
         .of_type(:string)
         .with_options(null: false, default: '')
     end
 
     it do
-      is_expected.to have_db_column(:total_transaction_sum_cents)
+      expect(subject).to have_db_column(:total_transaction_sum_cents)
         .of_type(:integer)
         .with_options(null: false, default: 0)
     end
 
     it do
-      is_expected.to have_db_column(:total_transaction_sum_currency)
+      expect(subject).to have_db_column(:total_transaction_sum_currency)
         .of_type(:string)
         .with_options(null: false, default: 'USD')
     end

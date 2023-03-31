@@ -324,5 +324,4 @@ Devise.setup do |config|
     # Defaults expiration_time is 3600 seconds (1 hour).
     jwt.expiration_time = 120.minutes.to_i
   end
-
 end

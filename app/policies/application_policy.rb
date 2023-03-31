@@ -1,7 +1,7 @@
 module ContextHelpers
   private
 
-  def is_admin?
+  def admin?
     user.admin_role?
   end
 

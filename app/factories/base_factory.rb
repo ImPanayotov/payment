@@ -2,7 +2,7 @@ class BaseFactory
   attr_accessor :success,
                 :errors
 
-  def initialize(*attrs)
+  def initialize(*_attrs)
     @success = false
   end
 

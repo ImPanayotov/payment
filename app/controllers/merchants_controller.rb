@@ -3,7 +3,7 @@ class MerchantsController < ApplicationController
     merchants = Merchant.all
 
     render 'merchants/index',
-           locals: { merchants: merchants }
+           locals: { merchants: }
   end
 
   def show
@@ -13,34 +13,22 @@ class MerchantsController < ApplicationController
                            .order(id: :desc)
 
     render 'merchants/show',
-           locals: { merchant: merchant,
-                     transactions: transactions }
-  end
-
-  def edit
-    merchant = find_merchant
-
-    render 'merchants/edit',
-           locals: { merchant: merchant }
-  end
-
-  def update
-    merchant = find_merchant
-
-    if merchant.update(merchant_params)
-      redirect_to merchant_path(merchant),
-                  notice: 'Merchant successfully updated!'
-    else
-      render 'merchants/edit',
-             locals: { merchant: merchant }
-    end
+           locals: { merchant:,
+                     transactions: }
   end
 
   def new
     merchant = Merchant.new
 
     render 'merchants/new',
-           locals: { merchant: merchant }
+           locals: { merchant: }
+  end
+
+  def edit
+    merchant = find_merchant
+
+    render 'merchants/edit',
+           locals: { merchant: }
   end
 
   def create
@@ -51,7 +39,19 @@ class MerchantsController < ApplicationController
                   notice: 'Merchant successfully created!'
     else
       render 'merchants/new',
-             locals: { merchant: merchant }
+             locals: { merchant: }
+    end
+  end
+
+  def update
+    merchant = find_merchant
+
+    if merchant.update(merchant_params)
+      redirect_to merchant_path(merchant),
+                  notice: 'Merchant successfully updated!'
+    else
+      render 'merchants/edit',
+             locals: { merchant: }
     end
   end
 

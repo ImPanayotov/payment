@@ -1,23 +1,23 @@
 class Admin
   class CustomerPolicy < ApplicationPolicy
     def index?
-      is_admin?
+      admin?
     end
 
     def show?
-      is_admin?
+      admin?
     end
 
     def update?
-      is_admin?
+      admin?
     end
 
     def create?
-      is_admin?
+      admin?
     end
 
     def destroy?
-      is_admin?
+      admin?
     end
   end
 end

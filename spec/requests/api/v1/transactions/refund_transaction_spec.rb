@@ -8,28 +8,27 @@ describe 'POST /api/v1/transactions/refund_transaction' do
   end
 
   let(:amount_cents) do
-    2000_00
+    200_000
   end
 
   let(:authorize_transaction) do
     create(:transaction,
            :authorized,
-           merchant: merchant,
-           customer: customer,
-           amount_cents: amount_cents)
-
+           merchant:,
+           customer:,
+           amount_cents:)
   end
 
   let(:charge_transaction) do
     create(:transaction,
            :charged,
-           merchant: merchant,
-           customer: customer,
-           amount_cents: amount_cents)
+           merchant:,
+           customer:,
+           amount_cents:)
   end
 
   let(:params) do
-    { transaction: { amount_cents: amount_cents,
+    { transaction: { amount_cents:,
                      customer_id: customer.id,
                      details: 'No details',
                      type: 'RefundTransaction' } }
@@ -49,14 +48,14 @@ describe 'POST /api/v1/transactions/refund_transaction' do
 
       expect(RefundTransaction.last.status).to eq('approved')
       expect(charge_transaction.status).to eq('refunded')
-      expect(response.status).to eq(201)
+      expect(response).to have_http_status(:created)
     end
   end
 
-  context "with invalid params" do
+  context 'with invalid params' do
     context 'when amount is incorrect' do
       let(:invalid_amount_cents) do
-        Money.new(1000_00)
+        Money.new(100_000)
       end
 
       let(:params) do
@@ -65,7 +64,6 @@ describe 'POST /api/v1/transactions/refund_transaction' do
                          details: 'No details',
                          type: 'RefundTransaction' } }
       end
-
 
       it do
         expect do
@@ -76,7 +74,7 @@ describe 'POST /api/v1/transactions/refund_transaction' do
 
         expect(RefundTransaction.last.status).to eq('error')
         expect(charge_transaction.status).to eq('approved')
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
@@ -86,7 +84,7 @@ describe 'POST /api/v1/transactions/refund_transaction' do
       end
 
       let(:params) do
-        { transaction: { amount_cents: amount_cents,
+        { transaction: { amount_cents:,
                          customer_id: new_customer.id,
                          details: 'No details',
                          type: 'RefundTransaction' } }
@@ -101,7 +99,7 @@ describe 'POST /api/v1/transactions/refund_transaction' do
 
         expect(RefundTransaction.last.status).to eq('error')
         expect(charge_transaction.status).to eq('approved')
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
