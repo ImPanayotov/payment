@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :transaction do
     initialize_with { type.present? ? type.constantize.new : Transaction.new }
-    
+
     uuid { SecureRandom.uuid }
     association :merchant
     association :customer
