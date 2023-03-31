@@ -1,13 +1,6 @@
 class Merchant < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
-
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :validatable,
-         :jwt_authenticatable,
-         :rememberable,
-         jwt_revocation_strategy: self
+  include DeviseConcern
 
   has_many :transactions, dependent: :restrict_with_exception
   has_many :follow_transactions, through: :transactions
