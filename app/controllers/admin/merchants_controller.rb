@@ -1,5 +1,5 @@
 class Admin
-  class MerchantsController < AdminController
+  class MerchantsController < BaseController
     def index
       merchants = Merchant.all
 
@@ -47,7 +47,7 @@ class Admin
       authorize(merchant)
 
       if merchant.save
-        redirect_to merchant_path(merchant),
+        redirect_to admin_merchant_path(merchant),
                     notice: 'Merchant successfully created!'
       else
         render 'merchants/new',
@@ -61,7 +61,7 @@ class Admin
       authorize(merchant)
 
       if merchant.update(merchant_params)
-        redirect_to merchant_path(merchant),
+        redirect_to admin_merchant_path(merchant),
                     notice: 'Merchant successfully updated!'
       else
         render 'merchants/edit',
@@ -75,7 +75,7 @@ class Admin
       authorize(merchant)
 
       merchant.destroy
-      redirect_to merchants_path,
+      redirect_to admin_merchants_path,
                   flash: { notice: 'Merchant was successfully removed!' }
     end
 

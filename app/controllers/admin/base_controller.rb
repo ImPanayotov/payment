@@ -1,5 +1,5 @@
 class Admin
-  class AdminController < ApplicationController
+  class BaseController < ApplicationController
     before_action :authenticate_admin_user!
 
     def policy_scope(scope)

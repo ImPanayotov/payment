@@ -1,5 +1,5 @@
 class Admin
-  class TransactionsController < AdminController
+  class TransactionsController < BaseController
     def index
       transactions = Transaction.order(id: :desc)
 

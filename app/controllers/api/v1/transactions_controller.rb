@@ -1,6 +1,6 @@
 module Api
   module V1
-    class TransactionsController < ApplicationController
+    class TransactionsController < BaseController
       InvalidAuthorizeTransaction = Class.new(StandardError)
       InvalidRefundTransaction = Class.new(StandardError)
 
