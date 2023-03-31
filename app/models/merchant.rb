@@ -2,7 +2,7 @@ class Merchant < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   include DeviseConcern
 
-  has_many :transactions, dependent: :restrict_with_exception
+  has_many :transactions, dependent: :restrict_with_error
   has_many :follow_transactions, through: :transactions
 
   enum status: { active: 0, inactive: 1 }

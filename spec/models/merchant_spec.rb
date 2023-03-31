@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Merchant do
   describe 'associations' do
-    it { is_expected.to have_many(:transactions).dependent(:restrict_with_exception) }
+    it { is_expected.to have_many(:transactions).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:follow_transactions).through(:transactions) }
   end
 
