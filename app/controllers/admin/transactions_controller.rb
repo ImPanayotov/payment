@@ -3,6 +3,8 @@ class Admin
     def index
       transactions = Transaction.order(id: :desc)
 
+      authorize(transactions)
+
       render 'transactions/index',
              locals: { transactions: }
     end

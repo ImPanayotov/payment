@@ -1,6 +1,8 @@
 class Admin
   class WelcomeController < AdminController
     def index
+      authorize(:welcome)
+
       transactions_count = Transaction.count
       merchants_count = Merchant.count
       customers_count = Customer.count

@@ -3,12 +3,17 @@ class Admin
     def index
       merchants = Merchant.all
 
+      authorize(merchants)
+
       render 'merchants/index',
              locals: { merchants: }
     end
 
     def show
       merchant = find_merchant
+
+      authorize(merchant)
+
       transactions = merchant.transactions
                              .includes(:customer)
                              .order(id: :desc)
@@ -21,12 +26,16 @@ class Admin
     def new
       merchant = Merchant.new
 
+      authorize(merchant)
+
       render 'merchants/new',
              locals: { merchant: }
     end
 
     def edit
       merchant = find_merchant
+
+      authorize(merchant)
 
       render 'merchants/edit',
              locals: { merchant: }
@@ -35,8 +44,10 @@ class Admin
     def create
       merchant = Merchant.new(merchant_params)
 
+      authorize(merchant)
+
       if merchant.save
-        redirect_to admin_merchant_path(merchant),
+        redirect_to merchant_path(merchant),
                     notice: 'Merchant successfully created!'
       else
         render 'merchants/new',
@@ -47,8 +58,10 @@ class Admin
     def update
       merchant = find_merchant
 
+      authorize(merchant)
+
       if merchant.update(merchant_params)
-        redirect_to admin_merchant_path(merchant),
+        redirect_to merchant_path(merchant),
                     notice: 'Merchant successfully updated!'
       else
         render 'merchants/edit',
@@ -59,8 +72,10 @@ class Admin
     def destroy
       merchant = find_merchant
 
+      authorize(merchant)
+
       merchant.destroy
-      redirect_to admin_merchants_path,
+      redirect_to merchants_path,
                   flash: { notice: 'Merchant was successfully removed!' }
     end
 
@@ -81,10 +96,10 @@ class Admin
 
     def update_merchant_attrs
       %i[name
-         email
-         status
-         description
-         total_transaction_sum]
+       email
+       status
+       description
+       total_transaction_sum]
     end
 
     def create_merchant_attrs
