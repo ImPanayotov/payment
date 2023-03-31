@@ -1,7 +1,7 @@
 class Admin
   class WelcomePolicy < ApplicationPolicy
     def index?
-      is_admin?
+      admin?
     end
   end
 end

@@ -1,7 +1,7 @@
 class Admin
   class TransactionPolicy < ApplicationPolicy
     def index?
-      is_admin?
+      admin?
     end
   end
 end
