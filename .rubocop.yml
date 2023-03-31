@@ -1,3 +1,31 @@
 require:
   - rubocop-rails
   - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Exclude:
+    - 'app/models/**/*'
+    - 'app/controllers/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false

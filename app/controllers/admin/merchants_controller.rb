@@ -4,7 +4,7 @@ class Admin
       merchants = Merchant.all
 
       render 'merchants/index',
-             locals: { merchants: merchants }
+             locals: { merchants: }
     end
 
     def show
@@ -14,34 +14,22 @@ class Admin
                              .order(id: :desc)
 
       render 'merchants/show',
-             locals: { merchant: merchant,
-                       transactions: transactions }
-    end
-
-    def edit
-      merchant = find_merchant
-
-      render 'merchants/edit',
-             locals: { merchant: merchant }
-    end
-
-    def update
-      merchant = find_merchant
-
-      if merchant.update(merchant_params)
-        redirect_to admin_merchant_path(merchant),
-                    notice: 'Merchant successfully updated!'
-      else
-        render 'merchants/edit',
-               locals: { merchant: merchant }
-      end
+             locals: { merchant:,
+                       transactions: }
     end
 
     def new
       merchant = Merchant.new
 
       render 'merchants/new',
-             locals: { merchant: merchant }
+             locals: { merchant: }
+    end
+
+    def edit
+      merchant = find_merchant
+
+      render 'merchants/edit',
+             locals: { merchant: }
     end
 
     def create
@@ -52,7 +40,19 @@ class Admin
                     notice: 'Merchant successfully created!'
       else
         render 'merchants/new',
-               locals: { merchant: merchant }
+               locals: { merchant: }
+      end
+    end
+
+    def update
+      merchant = find_merchant
+
+      if merchant.update(merchant_params)
+        redirect_to admin_merchant_path(merchant),
+                    notice: 'Merchant successfully updated!'
+      else
+        render 'merchants/edit',
+               locals: { merchant: }
       end
     end
 
@@ -81,10 +81,10 @@ class Admin
 
     def update_merchant_attrs
       %i[name
-       email
-       status
-       description
-       total_transaction_sum]
+         email
+         status
+         description
+         total_transaction_sum]
     end
 
     def create_merchant_attrs
