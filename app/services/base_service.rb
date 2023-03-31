@@ -15,7 +15,7 @@ class BaseService
     @success = true
   end
 
-  def errors
+  def errors!
     @errors ||= ActiveModel::Errors.new(self)
   end
 
