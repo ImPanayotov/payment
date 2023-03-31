@@ -29,3 +29,15 @@ Style/FrozenStringLiteralComment:
 
 Rails/I18nLocaleTexts:
   Enabled: false
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'app/controllers/api/v1/merchants/*'
+
+Layout/MultilineHashBraceLayout:
+  Exclude:
+    - 'app/controllers/api/v1/merchants/*'
+
+Style/RedundantArgument:
+  Exclude:
+    - 'app/controllers/api/v1/merchants/*'
