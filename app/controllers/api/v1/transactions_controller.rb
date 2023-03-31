@@ -1,51 +1,71 @@
 module Api
   module V1
     class TransactionsController < ApplicationController
+      InvalidAuthorizeTransaction = Class.new(StandardError)
+      InvalidRefundTransaction = Class.new(StandardError)
+
       def authorize_transaction
-        transaction = AuthorizeTransaction.create!(transaction_params) do |t|
-          t.generate_uuid
-        end
+        form =
+          Api::V1::Transactions::CreateForm.new(transaction_params)
 
-        authorize(transaction)
+        form.save
 
-        service = Api::V1::Transactions::AuthorizeService.new(
-          transaction_params: transaction_params,
-          transaction: transaction,
-          current_merchant: current_merchant
+        raise InvalidAuthorizeTransaction unless form.success
+
+        authorize(form.transaction)
+
+        factory = TransactionFactory.new(
+          form:,
+          transaction_params:,
+          current_merchant:
         )
 
-        service.call
+        factory.create
 
-        if service.success?
-          render json: service.transaction,
+        if factory.success
+          render json: factory.service.transaction,
                  status: :created
         else
-          render json: service.errors,
+          render json: factory.errors,
                  status: :unprocessable_entity
         end
+      rescue InvalidAuthorizeTransaction,
+             StandardError => e
+        @errors = e.message
+        render json: e.message,
+               status: :unprocessable_entity
       end
 
       def refund_transaction
-        transaction = RefundTransaction.create!(transaction_params) do |t|
-          t.generate_uuid
-        end
+        form =
+          Api::V1::Transactions::CreateForm.new(transaction_params)
 
-        authorize(transaction)
+        form.save
 
-        service = Api::V1::Transactions::RefundService.new(
-          transaction_params: transaction_params,
-          transaction: transaction,
-          current_merchant: current_merchant
+        raise InvalidRefundTransaction unless form.success
+
+        authorize(form.transaction)
+
+        factory = TransactionFactory.new(
+          form:,
+          transaction_params:,
+          current_merchant:
         )
 
-        service.call
-        if service.success?
-          render json: service.transaction,
+        factory.create
+
+        if factory.success?
+          render json: factory.service.transaction,
                  status: :created
         else
-          render json: service.errors,
+          render json: factory.errors,
                  status: :unprocessable_entity
         end
+      rescue InvalidAuthorizeTransaction,
+             StandardError => e
+        @errors = e.message
+        render json: e.message,
+               status: :unprocessable_entity
       end
 
       private
@@ -60,7 +80,8 @@ module Api
         %i[id
            amount_cents
            customer_id
-           details]
+           details
+           type]
       end
 
       def merge_params

@@ -31,7 +31,8 @@ describe 'POST /api/v1/transactions/refund_transaction' do
   let(:params) do
     { transaction: { amount_cents: amount_cents,
                      customer_id: customer.id,
-                     details: 'No details' } }
+                     details: 'No details',
+                     type: 'RefundTransaction' } }
   end
 
   before do
@@ -61,7 +62,8 @@ describe 'POST /api/v1/transactions/refund_transaction' do
       let(:params) do
         { transaction: { amount_cents: invalid_amount_cents,
                          customer_id: customer.id,
-                         details: 'No details' } }
+                         details: 'No details',
+                         type: 'RefundTransaction' } }
       end
 
 
@@ -85,8 +87,9 @@ describe 'POST /api/v1/transactions/refund_transaction' do
 
       let(:params) do
         { transaction: { amount_cents: amount_cents,
-          customer_id: new_customer.id,
-          details: 'No details' } }
+                         customer_id: new_customer.id,
+                         details: 'No details',
+                         type: 'RefundTransaction' } }
       end
 
       it do
