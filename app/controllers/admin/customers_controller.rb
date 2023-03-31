@@ -1,5 +1,5 @@
 class Admin
-  class CustomersController < AdminController
+  class CustomersController < BaseController
     def index
       customers = Customer.all
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AuthorizeTransactionPolicy, type: :policy do
+describe Api::V1::AuthorizeTransactionPolicy, type: :policy do
   subject do
     described_class.new(merchant, transaction)
   end

@@ -1,5 +1,5 @@
 class Admin
-  class WelcomeController < AdminController
+  class WelcomeController < BaseController
     def index
       authorize(:welcome)
 

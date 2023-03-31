@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe RefundTransactionPolicy, type: :policy do
+describe Api::V1::RefundTransactionPolicy, type: :policy do
   subject do
     described_class.new(merchant, transaction)
   end

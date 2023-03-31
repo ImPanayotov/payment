@@ -11,7 +11,6 @@ RSpec.describe Transaction do
         .class_name('Transaction')
         .with_foreign_key('follow_transaction_id')
         .dependent(:restrict_with_error)
-        .inverse_of(:follow_transactions)
     end
   end
 
