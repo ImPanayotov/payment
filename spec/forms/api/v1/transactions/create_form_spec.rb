@@ -24,7 +24,7 @@ RSpec.describe Api::V1::Transactions::CreateForm, type: :model do
     end
 
     it do
-      is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES)
+      expect(subject).to validate_inclusion_of(:type).in_array(described_class::TYPES)
     end
   end
 end

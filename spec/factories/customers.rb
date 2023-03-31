@@ -5,6 +5,6 @@ FactoryBot.define do
     email { "#{first_name.chr}.#{last_name}@#{Faker::Internet.domain_name}" }
     phone { Faker::PhoneNumber.cell_phone }
     password { 'Password123!' }
-    amount_cents { 10000_00 }
+    amount_cents { 1_000_000 }
   end
 end

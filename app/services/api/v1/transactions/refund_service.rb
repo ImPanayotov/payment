@@ -48,6 +48,7 @@ module Api
                ::Transactions::RefundedTransactions::AlreadyRefundedError,
                StandardError => e
           transaction.error_status!
+          errors!
           errors.add(:base, e.message)
         end
 

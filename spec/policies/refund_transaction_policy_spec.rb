@@ -12,7 +12,7 @@ describe RefundTransactionPolicy, type: :policy do
   let(:transaction) do
     create(:transaction,
            :refunded,
-           merchant: merchant)
+           merchant:)
   end
 
   describe '.refund_transaction?' do

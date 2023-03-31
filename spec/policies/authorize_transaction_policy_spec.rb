@@ -12,7 +12,7 @@ describe AuthorizeTransactionPolicy, type: :policy do
   let(:transaction) do
     create(:transaction,
            :authorized,
-           merchant: merchant)
+           merchant:)
   end
 
   describe '.authorize_transaction?' do
